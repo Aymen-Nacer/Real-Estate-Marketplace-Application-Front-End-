@@ -9,10 +9,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Import Bootstrap JavaScript (and its dependencies)
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { HomeComponent } from './home/home/home.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent],
-  imports: [BrowserModule, AppRoutingModule],
+  declarations: [AppComponent, NavbarComponent, HomeComponent],
+  imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
