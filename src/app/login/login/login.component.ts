@@ -19,7 +19,7 @@ export class LoginComponent {
       loginForm.valid &&
       this.authService.login(this.username, this.password)
     ) {
-      this.router.navigate(['/home/1']);
+      this.router.navigate(['']);
     } else {
       alert('Invalid username or password');
     }
