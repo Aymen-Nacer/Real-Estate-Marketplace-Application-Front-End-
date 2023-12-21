@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card shadow">
+        <div class="card-title text-center border-bottom">
+          <h2 class="p-3">Adding New Property</h2>
+        </div>
+        <div class="card-body">
+          <form
+            #newPropertyForm="ngForm"
+            (ngSubmit)="onAddProperty(newPropertyForm)"
+          >
+            <div class="mb-4">
+              <label for="property-name" class="form-label"
+                >Property Name</label
+              >
+              <input
+                type="text"
+                id="propertyName"
+                [(ngModel)]="propertyName"
+                name="propertyName"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="mb-4">
+              <label for="property-description" class="form-label"
+                >Property Description</label
+              >
+              <input
+                type="text"
+                id="propertyDescription"
+                [(ngModel)]="propertyDescription"
+                name="propertyDescription"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">
+                Add Property
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

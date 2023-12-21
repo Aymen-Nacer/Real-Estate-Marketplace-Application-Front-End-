@@ -13,9 +13,10 @@ import { HomeComponent } from './home/home/home.component';
 import { FormsModule } from '@angular/forms';
 import { ListingItemComponent } from './listing-item/listing-item/listing-item.component';
 import { LoginComponent } from './login/login/login.component';
+import { AddPropertyComponent } from './add-property/add-property/add-property.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent],
+  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent, AddPropertyComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
