@@ -11,9 +11,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { HomeComponent } from './home/home/home.component';
 import { FormsModule } from '@angular/forms';
+import { ListingItemComponent } from './listing-item/listing-item/listing-item.component';
+import { LoginComponent } from './login/login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomeComponent],
+  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
