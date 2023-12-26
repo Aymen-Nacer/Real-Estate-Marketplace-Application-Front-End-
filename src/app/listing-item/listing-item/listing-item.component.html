@@ -1,21 +1,21 @@
 <div class="card">
   <a href="">
     <img
-      src="https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/Sales_Blog/real-estate-business-compressor.jpg?width=595&height=400&name=real-estate-business-compressor.jpg"
+      [src]="listing.imageUrls[0]"
       alt="listing cover"
       class="property-img rounded mb-3"
     />
   </a>
   <div class="d-flex flex-column p-3">
-    <p class="">Listing Name</p>
+    <p class="">{{ listing.name }}</p>
     <div class="d-flex align-items-center gap-1">
-      <p class="">Listing Address</p>
+      <p class="">{{ listing.address }}</p>
     </div>
-    <p class="">Listing Description</p>
-    <p class="">$1000 / month</p>
+    <p class="">{{ listing.description }}</p>
+    <p class="">{{ listing.price }}</p>
     <div class="text-slate-700 d-flex gap-4">
-      <div class="">2 beds</div>
-      <div class="">2 baths</div>
+      <div class="">{{ listing.bedrooms }} beds</div>
+      <div class="">{{ listing.bathrooms }} baths</div>
     </div>
   </div>
 </div>
