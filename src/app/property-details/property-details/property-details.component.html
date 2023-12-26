@@ -13,18 +13,10 @@
 
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img
-            src="https://picsum.photos/800/300?random=1"
-            class="d-block w-100"
-            alt="..."
-          />
+          <img [src]="listing.imageUrls[0]" class="d-block w-100" alt="..." />
         </div>
         <div class="carousel-item">
-          <img
-            src="https://picsum.photos/800/300?random=2"
-            class="d-block w-100"
-            alt="..."
-          />
+          <img [src]="listing.imageUrls[1]" class="d-block w-100" alt="..." />
         </div>
         <div class="carousel-item">
           <img
@@ -61,30 +53,30 @@
 <!-- Listing Details -->
 <div id="listingDetails" class="container d-flex flex-column mx-auto my-7 p-5">
   <!-- Title -->
-  <p id="listingTitle" class="fs-2 fw-bold mb-3">Listing Title</p>
+  <p id="listingTitle" class="fs-2 fw-bold mb-3">{{ listing.name }}</p>
 
   <!-- Location -->
   <p
     id="listingLocation"
     class="fs-5 fw-bold d-flex align-items-center mt-6 mb-3 gap-2 text-muted"
   >
-    123 Main Street, City
+    {{ listing.address }}
   </p>
 
   <!-- Description -->
   <p id="listingDescription" class="fs-5 fw-bold">
     Description -
     <span class="text-muted">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
+      {{ listing.description }}
     </span>
   </p>
 
   <!-- Features -->
   <ul id="listingFeatures" class="fs-5">
-    <li class="d-flex align-items-center">3 beds</li>
-    <li class="d-flex align-items-center">2 baths</li>
+    <li class="d-flex align-items-center">{{ listing.bedrooms }} beds</li>
+    <li class="d-flex align-items-center">{{ listing.bathrooms }} baths</li>
     <li class="d-flex align-items-center"></li>
-    <li class="d-flex align-items-center">Furnished</li>
+    <li class="d-flex align-items-center">{{ listing.furnished }}</li>
   </ul>
 
   <!-- Contact Button -->

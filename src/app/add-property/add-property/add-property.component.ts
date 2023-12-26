@@ -42,6 +42,7 @@ export class AddPropertyComponent {
 
       console.log('added successfuly!');
       console.log('listings', this.listingsService.printProperties());
+      this.router.navigate(['']);
     } else {
       alert('Invalid username or password');
     }

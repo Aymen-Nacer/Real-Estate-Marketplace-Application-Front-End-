@@ -1,26 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Listing } from '../../models/listing';
+import { ListingsService } from '../../services/listings.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
-  listing: Listing = {
-    imageUrls: [
-      'https://picsum.photos/800/300?random=1',
-      'https://picsum.photos/800/300?random=1',
-    ],
-    name: 'Example Listing',
-    description: 'This is a sample description.',
-    address: '123 Main St',
-    bedrooms: 3,
-    bathrooms: 2,
-    price: 100000,
-    parking: true,
-    furnished: false,
-  };
+export class HomeComponent implements OnInit {
+  listings: Listing[] = [];
+
+  constructor(private listingService: ListingsService) {}
+
+  ngOnInit() {
+    this.listingService.listings$.subscribe((listings) => {
+      this.listings = listings;
+    });
+  }
 
   onSubmitForm(filterForm: any) {
     console.log(filterForm.value);
