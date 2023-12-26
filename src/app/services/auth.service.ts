@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
+import { UsersService } from './users.service';
+import { ListingsService } from './listings.service';
 
 @Injectable({
   providedIn: 'root',
@@ -7,33 +9,29 @@ import { User } from '../models/user';
 export class AuthService {
   private isLoggedIn = false;
 
-  private users: User[] = [
-    {
-      userId: 2,
-      username: 'aymennacer',
-      password: '123', // Make sure to use string for the password
-    },
-    // Add more users as needed
-  ];
+  constructor(
+    private usersService: UsersService,
+    private listingsService: ListingsService
+  ) {}
 
   private currentUser: User = {
     userId: 0,
     username: '',
-    password: '', // Add a password property to the currentUser
+    password: '',
   };
 
   signup(username: string, password: string): boolean {
-    if (this.users.some((u) => u.username === username)) {
+    if (this.usersService.hasUser(username)) {
       return false;
     }
 
     const newUser: User = {
-      userId: this.users.length + 1,
+      userId: this.usersService.usersLength() + 1,
       username,
       password,
     };
 
-    this.users.push(newUser);
+    this.usersService.addUser(newUser);
     this.isLoggedIn = true;
     this.currentUser = newUser;
 
@@ -41,9 +39,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): boolean {
-    const user = this.users.find(
-      (u) => u.username === username && u.password === password
-    );
+    const user = this.usersService.findUserByCredentials(username, password);
 
     if (user) {
       this.isLoggedIn = true;
@@ -70,5 +66,11 @@ export class AuthService {
 
   getCurrentUser(): User {
     return this.currentUser;
+  }
+
+  printProperties(): void {
+    console.log('isLoggedIn:', this.isLoggedIn);
+    console.log('currentUser:', this.currentUser);
+    console.log('users:', this.usersService.printProperties());
   }
 }
