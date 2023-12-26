@@ -15,9 +15,10 @@ import { ListingItemComponent } from './listing-item/listing-item/listing-item.c
 import { LoginComponent } from './login/login/login.component';
 import { AddPropertyComponent } from './add-property/add-property/add-property.component';
 import { PropertyDetailsComponent } from './property-details/property-details/property-details.component';
+import { SignupComponent } from './signup/signup/signup.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent, AddPropertyComponent, PropertyDetailsComponent],
+  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent, AddPropertyComponent, PropertyDetailsComponent, SignupComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],

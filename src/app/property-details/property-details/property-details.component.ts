@@ -1,30 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Listing } from '../../models/listing';
+import { ActivatedRoute } from '@angular/router';
+import { ListingsService } from '../../services/listings.service';
 
 @Component({
   selector: 'app-property-details',
   templateUrl: './property-details.component.html',
   styleUrl: './property-details.component.css',
 })
-export class PropertyDetailsComponent {
-  listing: Listing = {
-    propertyId: 1,
-    imageUrls: [
-      'https://picsum.photos/800/300?random=1',
-      'https://picsum.photos/800/300?random=1',
-    ],
-    name: 'Example Listing',
-    description: 'This is a sample description.',
-    address: '123 Main St',
-    bedrooms: 3,
-    bathrooms: 2,
-    price: 100000,
-    parking: true,
-    furnished: false,
-    user: {
-      userId: 1,
-      username: 'aymennacer',
-      password: '123',
-    },
-  };
+export class PropertyDetailsComponent implements OnInit {
+  listing: Listing | undefined;
+
+  constructor(
+    private route: ActivatedRoute,
+    private listingsService: ListingsService
+  ) {}
+
+  ngOnInit() {
+    let propertyId = -1;
+    this.route.paramMap.subscribe((params) => {
+      propertyId = parseInt(params.get('id') || '-1', 10);
+      const fetchedProperty = this.listingsService.findPropertyById(propertyId);
+
+      if (fetchedProperty) {
+        this.listing = fetchedProperty;
+      } else {
+        console.log(
+          `Property with ID ${propertyId} does not exist in the database.`
+        );
+      }
+    });
+  }
 }
