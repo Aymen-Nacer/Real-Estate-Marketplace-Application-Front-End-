@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { UsersService } from './users.service';
-import { ListingsService } from './listings.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,10 +8,7 @@ import { ListingsService } from './listings.service';
 export class AuthService {
   private isLoggedIn = false;
 
-  constructor(
-    private usersService: UsersService,
-    private listingsService: ListingsService
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   private currentUser: User = {
     userId: 0,

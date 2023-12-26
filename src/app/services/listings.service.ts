@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Listing } from '../models/listing';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListingsService {
-  private listings: Listing[] = [
+  private listingsSubject = new BehaviorSubject<Listing[]>([]);
+  listings$: Observable<Listing[]> = this.listingsSubject.asObservable();
+
+  private _listings: Listing[] = [
     {
       propertyId: 1,
       imageUrls: [
@@ -28,17 +32,23 @@ export class ListingsService {
     },
   ];
 
-  constructor() {}
+  constructor() {
+    this.listingsSubject.next(this._listings);
+  }
+  get listing(): Listing[] {
+    return this._listings;
+  }
 
   addProperty(listing: Listing) {
-    this.listings.push(listing);
+    this._listings.push(listing);
+    this.listingsSubject.next([...this._listings]); // Notify subscribers
   }
 
   findPropertyById(propertyId: number): Listing | undefined {
-    return this.listings.find((listing) => listing.propertyId === propertyId);
+    return this._listings.find((listing) => listing.propertyId === propertyId);
   }
 
   printProperties(): void {
-    console.log('listings:', this.listings);
+    console.log('listings:', this._listings);
   }
 }
