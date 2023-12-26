@@ -12,11 +12,19 @@ export class SignupComponent {
   username = '';
   password = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.printProperties();
+  }
 
   signup(signupForm: NgForm): void {
     if (signupForm.valid) {
-      console.log('added successfuly');
+      if (this.authService.signup(this.username, this.password)) {
+        console.log('signed up the user successfuly');
+      } else {
+        console.log('Encountered error in signing up');
+      }
+      this.authService.printProperties();
+
       this.router.navigate(['']);
     } else {
       alert('Invalid username or password');

@@ -12,13 +12,18 @@ export class LoginComponent {
   username = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.printProperties();
+  }
 
   login(loginForm: NgForm): void {
-    if (
-      loginForm.valid &&
-      this.authService.login(this.username, this.password)
-    ) {
+    if (loginForm.valid) {
+      if (this.authService.login(this.username, this.password)) {
+        console.log('Logged in the user successfuly');
+      } else {
+        console.log('Encountered error in Logging in');
+      }
+      this.authService.printProperties();
       this.router.navigate(['']);
     } else {
       alert('Invalid username or password');
