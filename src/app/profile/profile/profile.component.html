@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card shadow">
+        <div class="card-title text-center border-bottom">
+          <h2 class="p-3">Profile</h2>
+        </div>
+        <div class="card-body">
+          <form #profileForm="ngForm" (ngSubmit)="onProfileUpdate(profileForm)">
+            <div class="mb-4">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                id="username"
+                [(ngModel)]="username"
+                name="username"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                [(ngModel)]="password"
+                name="password"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn mb-2 border border-dark"
+                [disabled]="profileForm.invalid"
+              >
+                Update
+              </button>
+              <button
+                routerLink="/addProperty"
+                class="btn mb-2 border border-dark"
+              >
+                Add new property
+              </button>
+              <button
+                (click)="authService.logout()"
+                class="btn mb-2 border border-dark"
+              >
+                Logout
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
