@@ -38,20 +38,28 @@
               >
                 Update
               </button>
-              <button
-                routerLink="/addProperty"
-                class="btn mb-2 border border-dark"
-              >
-                Add new property
-              </button>
-              <button
-                (click)="authService.logout()"
-                class="btn mb-2 border border-dark"
-              >
-                Logout
-              </button>
             </div>
           </form>
+          <div class="d-grid">
+            <button
+              routerLink="/addProperty"
+              class="btn mb-2 border border-dark"
+            >
+              Add new property
+            </button>
+            <button
+              (click)="authService.logout()"
+              class="btn mb-2 border border-dark"
+            >
+              Logout
+            </button>
+            <button
+              class="btn mb-2 border border-dark"
+              (click)="onDeleteAccount()"
+            >
+              Delete my Account
+            </button>
+          </div>
         </div>
       </div>
     </div>
