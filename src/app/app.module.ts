@@ -16,9 +16,10 @@ import { LoginComponent } from './login/login/login.component';
 import { AddPropertyComponent } from './add-property/add-property/add-property.component';
 import { PropertyDetailsComponent } from './property-details/property-details/property-details.component';
 import { SignupComponent } from './signup/signup/signup.component';
+import { ProfileComponent } from './profile/profile/profile.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent, AddPropertyComponent, PropertyDetailsComponent, SignupComponent],
+  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent, AddPropertyComponent, PropertyDetailsComponent, SignupComponent, ProfileComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],

@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login/login.component';
 import { AddPropertyComponent } from './add-property/add-property/add-property.component';
 import { PropertyDetailsComponent } from './property-details/property-details/property-details.component';
 import { SignupComponent } from './signup/signup/signup.component';
+import { ProfileComponent } from './profile/profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'addProperty', component: AddPropertyComponent },
   { path: 'propertyDetails/:id', component: PropertyDetailsComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'profile', component: ProfileComponent },
 ];
 
 @NgModule({

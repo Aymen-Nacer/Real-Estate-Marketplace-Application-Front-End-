@@ -36,6 +36,31 @@ export class UsersService {
     this._users.push(user);
     this.usersSubject.next([...this._users]);
   }
+  DeleteUser(user: User): boolean {
+    const index = this._users.findIndex((u) => u.userId === user.userId);
+
+    if (index !== -1) {
+      this._users.splice(index, 1); // Remove the user from the array
+      this.usersSubject.next([...this._users]);
+      return true;
+    } else {
+      return false; // User not found
+    }
+  }
+
+  updateUser(updatedUser: User): boolean {
+    const index = this._users.findIndex(
+      (user) => user.userId === updatedUser.userId
+    );
+
+    if (index !== -1) {
+      this._users[index] = { ...this._users[index], ...updatedUser };
+      this.usersSubject.next([...this._users]);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   findUserByCredentials(username: string, password: string): User | undefined {
     return this._users.find(

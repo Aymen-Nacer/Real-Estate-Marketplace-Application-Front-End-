@@ -48,6 +48,12 @@ export class ListingsService {
     return this._listings.find((listing) => listing.propertyId === propertyId);
   }
 
+  findPropertiesByUserId(userId: number): Listing[] {
+    return this._listings.filter(
+      (listing) => listing.user && listing.user.userId === userId
+    );
+  }
+
   printProperties(): void {
     console.log('listings:', this._listings);
   }

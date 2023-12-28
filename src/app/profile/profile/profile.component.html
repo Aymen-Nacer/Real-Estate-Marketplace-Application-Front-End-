@@ -59,9 +59,52 @@
             >
               Delete my Account
             </button>
+            <button
+              class="btn mb-2 border border-dark"
+              (click)="onShowListings()"
+            >
+              Show my Listings
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="showlistings && userListings && userListings.length > 0">
+  <div class="container mt-4">
+    <h1 class="text-center mt-4 mb-4 font-weight-bold">Your Listings</h1>
+    <div *ngFor="let listing of userListings" class="card mb-3">
+      <div class="row">
+        <div class="col-md-3">
+          <a [routerLink]="'/listing/' + listing.propertyId">
+            <img
+              [src]="listing.imageUrls[0]"
+              alt="listing cover"
+              class="card-img h-100"
+            />
+          </a>
+        </div>
+        <div class="col-md-9">
+          <div class="card-body">
+            <a
+              [routerLink]="'/listing/' + listing.propertyId"
+              class="text-dark fs-5 fw-bold text-decoration-none"
+            >
+              <p class="card-title">{{ listing.name }}</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container
+  *ngIf="
+    showlistings && (userListings === undefined || userListings.length === 0)
+  "
+>
+  <h1>You have no listings</h1>
+</ng-container>

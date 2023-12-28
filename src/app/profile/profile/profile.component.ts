@@ -4,6 +4,8 @@ import { NgForm } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
+import { Listing } from '../../models/listing';
+import { ListingsService } from '../../services/listings.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,11 +15,31 @@ import { Router } from '@angular/router';
 export class ProfileComponent {
   username = '';
   password = '';
+  showlistings = false;
+  userListings: Listing[] = [
+    {
+      propertyId: 2,
+      imageUrls: [
+        'https://picsum.photos/800/300?random=1',
+        'https://picsum.photos/800/300?random=1',
+      ],
+      address: '123 Main St',
+      bedrooms: 3,
+      bathrooms: 2,
+      price: 100000,
+      parking: true,
+      furnished: false,
+      name: 'test name',
+      description: 'test description',
+      user: this.authService.getCurrentUser(),
+    },
+  ];
 
   constructor(
     public authService: AuthService,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private listingsService: ListingsService
   ) {
     this.authService.printProperties();
   }
@@ -61,5 +83,19 @@ export class ProfileComponent {
       console.log(`the user ${currentUser.username} was not found`);
     }
     this.usersService.printProperties();
+  }
+
+  onShowListings() {
+    this.showlistings = true;
+    const currentUserId = this.authService.getCurrentUser().userId;
+    const listingsByUserId =
+      this.listingsService.findPropertiesByUserId(currentUserId);
+
+    if (listingsByUserId.length === 0) {
+      console.log('No properties found for user ID', currentUserId);
+    } else {
+      console.log('listings was successfuly found: ', listingsByUserId);
+      this.userListings = listingsByUserId;
+    }
   }
 }
