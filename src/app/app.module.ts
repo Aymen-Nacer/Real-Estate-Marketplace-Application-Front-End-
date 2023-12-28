@@ -17,9 +17,10 @@ import { AddPropertyComponent } from './add-property/add-property/add-property.c
 import { PropertyDetailsComponent } from './property-details/property-details/property-details.component';
 import { SignupComponent } from './signup/signup/signup.component';
 import { ProfileComponent } from './profile/profile/profile.component';
+import { SearchComponent } from './search/search/search.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent, AddPropertyComponent, PropertyDetailsComponent, SignupComponent, ProfileComponent],
+  declarations: [AppComponent, NavbarComponent, HomeComponent, ListingItemComponent, LoginComponent, AddPropertyComponent, PropertyDetailsComponent, SignupComponent, ProfileComponent, SearchComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],

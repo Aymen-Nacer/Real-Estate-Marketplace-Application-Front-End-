@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Listing } from '../models/listing';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ListingFilter } from '../models/listingFilter';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class ListingsService {
         'https://picsum.photos/800/300?random=1',
         'https://picsum.photos/800/300?random=1',
       ],
-      name: 'Example Listing',
+      name: 'rocky',
       description: 'This is a sample description.',
       address: '123 Main St',
       bedrooms: 3,
@@ -54,6 +55,17 @@ export class ListingsService {
     );
   }
 
+  filterListings(filter: ListingFilter): Listing[] {
+    return this._listings.filter((listing) => {
+      const nameMatch = listing.name.toLowerCase().includes(filter.name);
+
+      const furnishedMatch = filter.furnished.includes(listing.furnished);
+
+      const parkingMatch = filter.parking.includes(listing.parking);
+
+      return nameMatch && furnishedMatch && parkingMatch;
+    });
+  }
   printProperties(): void {
     console.log('listings:', this._listings);
   }

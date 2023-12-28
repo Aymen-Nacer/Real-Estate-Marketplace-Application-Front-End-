@@ -6,6 +6,7 @@ import { AddPropertyComponent } from './add-property/add-property/add-property.c
 import { PropertyDetailsComponent } from './property-details/property-details/property-details.component';
 import { SignupComponent } from './signup/signup/signup.component';
 import { ProfileComponent } from './profile/profile/profile.component';
+import { SearchComponent } from './search/search/search.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'propertyDetails/:id', component: PropertyDetailsComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'search', component: SearchComponent },
 ];
 
 @NgModule({
