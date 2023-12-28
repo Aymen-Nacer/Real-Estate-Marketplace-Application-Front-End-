@@ -1,0 +1,71 @@
+<div class="container-fluid d-flex flex-column flex-md-row">
+  <div class="p-5 border-end border-bottom border-2 flex-grow-2">
+    <form
+      #searchForm="ngForm"
+      (ngSubmit)="onSearchSubmit(searchForm)"
+      class="d-flex flex-column gap-3"
+    >
+      <div class="d-flex align-items-center gap-2">
+        <label for="searchTerm" class="font-weight-bold">Search Term:</label>
+        <input
+          type="text"
+          id="searchTerm"
+          placeholder="Search..."
+          class="form-control rounded p-3 w-100"
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+        />
+      </div>
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <label class="font-weight-bold">Amenities:</label>
+        <div class="d-flex gap-2">
+          <input
+            type="checkbox"
+            id="parking"
+            class="form-check-input"
+            [(ngModel)]="parking"
+            name="parking"
+          />
+          <label class="form-check-label" for="parking">Parking</label>
+        </div>
+        <div class="d-flex gap-2">
+          <input
+            type="checkbox"
+            id="furnished"
+            class="form-check-input"
+            [(ngModel)]="furnished"
+            name="furnished"
+          />
+          <label class="form-check-label" for="furnished">Furnished</label>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <label for="sort_order" class="font-weight-bold">Sort:</label>
+        <select
+          [(ngModel)]="sortOrder"
+          id="sort_order"
+          name="sortOrder"
+          class="form-select rounded p-3"
+        >
+          <option value="regularPrice_desc">Price high to low</option>
+          <option value="regularPrice_asc">Price low to high</option>
+          <option value="createdAt_desc">Latest</option>
+          <option value="createdAt_asc">Oldest</option>
+        </select>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary rounded p-3 text-uppercase"
+        [disabled]="!searchForm.valid"
+      >
+        Search
+      </button>
+    </form>
+  </div>
+
+  <div class="flex-grow-1">
+    <h1 class="font-weight-bold border-bottom p-3 text-dark mt-5">
+      Listing results:
+    </h1>
+  </div>
+</div>
