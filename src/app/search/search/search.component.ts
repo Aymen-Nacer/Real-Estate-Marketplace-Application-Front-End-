@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ListingFilter } from '../../models/listingFilter';
 import { ListingsService } from '../../services/listings.service';
+import { Listing } from '../../models/listing';
 
 @Component({
   selector: 'app-search',
@@ -14,6 +15,8 @@ export class SearchComponent implements OnInit {
   parking = '';
   furnished = '';
   sortOrder = '';
+
+  listings: Listing[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -32,7 +35,7 @@ export class SearchComponent implements OnInit {
       const filter = this.cleaningQueryParams();
       // filter the local database according to the filter applied
       const filteredListings = this.listingService.filterListings(filter);
-      console.log('filtered Listings is', filteredListings);
+      this.listings = filteredListings;
     });
   }
 
