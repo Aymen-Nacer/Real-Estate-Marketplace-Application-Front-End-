@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Listing } from '../../models/listing';
 import { ListingsService } from '../../services/listings.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +10,14 @@ import { Subscription } from 'rxjs';
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
+  searchTerm = '';
   listings: Listing[] = [];
   private listingsSubscription: Subscription | undefined;
 
-  constructor(private listingService: ListingsService) {}
+  constructor(
+    private listingService: ListingsService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.listingsSubscription = this.listingService.listings$.subscribe(
@@ -22,8 +27,10 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  onSubmitForm(filterForm: any) {
-    console.log(filterForm.value);
+  onSubmitForm() {
+    this.router.navigate(['/search'], {
+      queryParams: { searchTerm: this.searchTerm },
+    });
   }
 
   ngOnDestroy() {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ListingFilter } from '../../models/listingFilter';
 import { ListingsService } from '../../services/listings.service';
 import { Listing } from '../../models/listing';
@@ -19,6 +19,7 @@ export class SearchComponent implements OnInit {
   listings: Listing[] = [];
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private listingService: ListingsService
   ) {}
@@ -41,10 +42,13 @@ export class SearchComponent implements OnInit {
 
   onSearchSubmit(profileForm: NgForm): void {
     if (profileForm.valid) {
-      console.log('searchTerm :', this.searchTerm);
-      console.log('parking :', this.parking);
-      console.log('furnished :', this.furnished);
-      console.log('sortOrder :', this.sortOrder);
+      this.router.navigate(['/search'], {
+        queryParams: {
+          searchTerm: this.searchTerm,
+          parking: this.parking,
+          furnished: this.furnished,
+        },
+      });
     } else {
       alert('Invalid username or password');
     }
