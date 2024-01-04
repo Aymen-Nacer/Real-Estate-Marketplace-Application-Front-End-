@@ -11,12 +11,16 @@ import { NgForm } from '@angular/forms';
 export class SignupComponent {
   username = '';
   password = '';
+  email = '';
 
   constructor(private authService: AuthService, private router: Router) {
     this.authService.printProperties();
   }
 
   signup(signupForm: NgForm): void {
+    console.log('email is', this.email);
+    console.log('username is', this.username);
+    console.log('password is', this.password);
     if (signupForm.valid) {
       if (this.authService.signup(this.username, this.password)) {
         console.log('signed up the user successfuly');
