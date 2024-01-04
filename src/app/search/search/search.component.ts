@@ -14,7 +14,7 @@ export class SearchComponent implements OnInit {
   searchTerm = '';
   parking = '';
   furnished = '';
-  sortOrder = '';
+  sortBy = '';
 
   listings: Listing[] = [];
 
@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit {
       this.searchTerm = queryParams.get('searchTerm') || '';
       this.parking = queryParams.get('parking') || '';
       this.furnished = queryParams.get('furnished') || '';
-      this.sortOrder = queryParams.get('sortOrder') || '';
+      this.sortBy = queryParams.get('sortBy') || '';
       // clean the the retreived values from query params and get a filter to be applied
       const filter = this.cleaningQueryParams();
       // filter the local database according to the filter applied
@@ -47,6 +47,7 @@ export class SearchComponent implements OnInit {
           searchTerm: this.searchTerm,
           parking: this.parking,
           furnished: this.furnished,
+          sortBy: this.sortBy,
         },
       });
     } else {
