@@ -13,8 +13,9 @@ import { ListingsService } from '../../services/listings.service';
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent {
-  username = '';
+  username = this.authService.getCurrentUser().username;
   password = '';
+  email = '';
   showlistings = false;
   userListings: Listing[] = [
     {

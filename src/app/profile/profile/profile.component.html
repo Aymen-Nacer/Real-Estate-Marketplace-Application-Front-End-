@@ -1,111 +1,108 @@
-<div class="container">
-  <div class="row justify-content-center mt-5">
-    <div class="col-lg-4 col-md-6 col-sm-6">
-      <div class="card shadow">
-        <div class="card-title text-center border-bottom">
-          <h2 class="p-3">Profile</h2>
-        </div>
-        <div class="card-body">
-          <form #profileForm="ngForm" (ngSubmit)="onProfileUpdate(profileForm)">
-            <div class="mb-4">
-              <label for="username" class="form-label">Username</label>
-              <input
-                type="text"
-                id="username"
-                [(ngModel)]="username"
-                name="username"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="mb-4">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                id="password"
-                [(ngModel)]="password"
-                name="password"
-                class="form-control"
-                required
-              />
-            </div>
-
-            <div class="d-grid">
-              <button
-                type="submit"
-                class="btn mb-2 border border-dark"
-                [disabled]="profileForm.invalid"
-              >
-                Update
-              </button>
-            </div>
-          </form>
-          <div class="d-grid">
-            <button
-              routerLink="/addProperty"
-              class="btn mb-2 border border-dark"
-            >
-              Add new property
-            </button>
-            <button
-              (click)="authService.logout()"
-              routerLink="/"
-              class="btn mb-2 border border-dark"
-            >
-              Logout
-            </button>
-            <button
-              class="btn mb-2 border border-dark"
-              (click)="onDeleteAccount()"
-            >
-              Delete my Account
-            </button>
-            <button
-              class="btn mb-2 border border-dark"
-              (click)="onShowListings()"
-            >
-              Show my Listings
-            </button>
-          </div>
-        </div>
+<!-- and -->
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center">
+  <div
+    class="container mx-auto bg-white max-w-lg rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 mb-10 mt-10"
+  >
+    <div class="p-3 max-w-lg mx-auto">
+      <h1 class="text-3xl font-semibold text-center my-7">Profile</h1>
+      <form
+        #updateForm="ngForm"
+        (ngSubmit)="onProfileUpdate(updateForm)"
+        class="flex flex-col gap-4"
+      >
+        <img
+          src="https://picsum.photos/200/300"
+          alt="profile"
+          class="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2 mb-7"
+        />
+        <input
+          type="text"
+          placeholder="Username"
+          [(ngModel)]="username"
+          default-value="currentUser.username"
+          id="username"
+          class="border p-3 rounded-lg"
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          id="email"
+          [(ngModel)]="email"
+          default-value="currentUser.email"
+          class="border p-3 rounded-lg"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          id="password"
+          name="password"
+          class="border p-3 rounded-lg"
+        />
+        <button
+          type="submit"
+          class="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+        >
+          Update Profile
+        </button>
+        <a
+          class="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95"
+          routerLink="/addProperty"
+        >
+          Add new Property
+        </a>
+      </form>
+      <div class="flex justify-between mt-5">
+        <span (click)="onDeleteAccount()" class="text-red-700 cursor-pointer">
+          Delete account
+        </span>
+        <span
+          (click)="authService.logout()"
+          routerLink="/"
+          class="text-red-700 cursor-pointer"
+        >
+          Sign out
+        </span>
       </div>
     </div>
-  </div>
-</div>
 
-<ng-container *ngIf="showlistings && userListings && userListings.length > 0">
-  <div class="container mt-4">
-    <h1 class="text-center mt-4 mb-4 font-weight-bold">Your Listings</h1>
-    <div *ngFor="let listing of userListings" class="card mb-3">
-      <div class="row">
-        <div class="col-md-3">
-          <a [routerLink]="'/listing/' + listing.propertyId">
+    <button (click)="onShowListings()" class="text-green-700 w-full mt-5 mb-10">
+      Show Listings
+    </button>
+  </div>
+
+  <ng-container
+    *ngIf="
+      showlistings && (userListings === undefined || userListings.length === 0)
+    "
+  >
+    <h1>You have no listings</h1>
+  </ng-container>
+  <ng-container *ngIf="showlistings && userListings && userListings.length > 0">
+    <div
+      class="container mx-auto bg-white max-w-lg rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 mb-10"
+    >
+      <div class="flex flex-col gap-4">
+        <h1 class="text-center mt-7 text-2xl font-semibold">Your Listings</h1>
+        <div
+          *ngFor="let listing of userListings"
+          class="border rounded-lg p-3 flex justify-between items-center gap-4 mb-10"
+        >
+          <a [routerLink]="'/propertyDetails/' + listing.propertyId">
             <img
               [src]="listing.imageUrls[0]"
               alt="listing cover"
-              class="card-img h-100"
+              class="h-16 w-16 object-contain"
             />
           </a>
-        </div>
-        <div class="col-md-9">
-          <div class="card-body">
-            <a
-              [routerLink]="'/listing/' + listing.propertyId"
-              class="text-dark fs-5 fw-bold text-decoration-none"
-            >
-              <p class="card-title">{{ listing.name }}</p>
-            </a>
-          </div>
+          <a
+            class="text-slate-700 font-semibold hover:underline truncate flex-1"
+            [routerLink]="'/propertyDetails/' + listing.propertyId"
+          >
+            <p>{{ listing.name }}</p>
+          </a>
         </div>
       </div>
     </div>
-  </div>
-</ng-container>
-
-<ng-container
-  *ngIf="
-    showlistings && (userListings === undefined || userListings.length === 0)
-  "
->
-  <h1>You have no listings</h1>
-</ng-container>
+  </ng-container>
+</div>
