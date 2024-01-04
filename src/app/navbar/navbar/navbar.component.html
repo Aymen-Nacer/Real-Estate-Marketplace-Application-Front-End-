@@ -1,32 +1,39 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand mb-0 h1" href="#">Real Estate</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
-        </li>
-        <li class="nav-item" *ngIf="!authService.isAuthenticated()">
-          <a class="nav-link" routerLink="/login">Login</a>
-        </li>
-        <li class="nav-item" *ngIf="!authService.isAuthenticated()">
-          <a class="nav-link" routerLink="/signup">Sign Up</a>
-        </li>
-        <li class="nav-item" *ngIf="authService.isAuthenticated()">
-          <a class="nav-link" routerLink="/profile">Profile</a>
-        </li>
-      </ul>
+<header class="py-6 border-b bg-white">
+  <div class="container mx-auto flex justify-between items-center">
+    <a routerLink="/">
+      <img src="" alt="logo" />
+    </a>
+
+    <div class="flex items-center gap-6">
+      <a
+        class="custom-color transition"
+        *ngIf="!authService.isAuthenticated()"
+        routerLink="/"
+      >
+        Home
+      </a>
+      <a
+        class="custom-color transition"
+        *ngIf="!authService.isAuthenticated()"
+        routerLink="/login"
+      >
+        Log in
+      </a>
+      <a
+        class="bg-black text-white px-4 py-3 rounded-lg transition custom-color2"
+        *ngIf="!authService.isAuthenticated()"
+        routerLink="/signup"
+      >
+        Sign up
+      </a>
+
+      <a
+        class="custom-color transition"
+        *ngIf="authService.isAuthenticated()"
+        routerLink="/profile"
+      >
+        Profile
+      </a>
     </div>
   </div>
-</nav>
+</header>
