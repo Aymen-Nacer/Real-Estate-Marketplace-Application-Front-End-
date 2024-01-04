@@ -13,6 +13,12 @@ import { Listing } from '../../models/listing';
 export class AddPropertyComponent {
   propertyName = '';
   propertyDescription = '';
+  address = '';
+  bedrooms = -1;
+  bathrooms = -1;
+  parking = false;
+  furnished = false;
+  propertyPrice = -1;
 
   constructor(
     private router: Router,
