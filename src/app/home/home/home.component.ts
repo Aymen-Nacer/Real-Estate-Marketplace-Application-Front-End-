@@ -28,9 +28,10 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmitForm() {
-    this.router.navigate(['/search'], {
-      queryParams: { searchTerm: this.searchTerm },
-    });
+    console.log('search term is', this.searchTerm);
+    // this.router.navigate(['/search'], {
+    //  queryParams: { searchTerm: this.searchTerm, sortBy: 'Latest' },
+    //});
   }
 
   ngOnDestroy() {
