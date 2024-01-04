@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Listing } from '../../models/listing';
 import { ActivatedRoute } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-property-details',
@@ -30,5 +31,13 @@ export class PropertyDetailsComponent implements OnInit {
         );
       }
     });
+  }
+
+  submitForm(contactForm: NgForm): void {
+    if (contactForm.valid) {
+      console.log(contactForm.value);
+    } else {
+      alert('Invalid username or password');
+    }
   }
 }
