@@ -17,6 +17,8 @@ export class LoginComponent {
   }
 
   login(loginForm: NgForm): void {
+    console.log('username is ', this.username);
+    console.log('password is ', this.password);
     if (loginForm.valid) {
       if (this.authService.login(this.username, this.password)) {
         console.log('Logged in the user successfuly');
