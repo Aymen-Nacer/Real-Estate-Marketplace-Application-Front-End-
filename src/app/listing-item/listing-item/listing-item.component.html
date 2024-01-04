@@ -1,21 +1,41 @@
-<div class="card">
-  <a [routerLink]="['/propertyDetails', listing.propertyId]">
-    <img
-      [src]="listing.imageUrls[0]"
-      alt="listing cover"
-      class="property-img rounded mb-3"
-    />
-  </a>
-  <div class="d-flex flex-column p-3">
-    <p class="">{{ listing.name }}</p>
-    <div class="d-flex align-items-center gap-1">
-      <p class="">{{ listing.address }}</p>
+<div
+  class="bg-white flex flex-col gap-3 shadow-1 p-5 rounded-lg rounded-tl-[90px] w-full max-w-[352px] mx-auto cursor-pointer hover:shadow-2xl transition"
+>
+  <div class="flex flex-col gap-8">
+    <a [routerLink]="['/propertyDetails', listing.propertyId]">
+      <img
+        [src]="listing.imageUrls[0]"
+        alt="listing cover"
+        class="rounded-lg rounded-tl-[90px] h-[220px] lg:h-[320px] w-full object-cover hover:scale-105 transition-scale duration-300"
+      />
+    </a>
+    <div class="flex gap-x-2 text-sm">
+      <span class="bg-green-500 rounded-full text-white px-3"> Type </span>
+      <span class="bg-violet-500 rounded-full text-white px-3"> Country </span>
     </div>
-    <p class="">{{ listing.description }}</p>
-    <p class="">{{ listing.price }}</p>
-    <div class="text-slate-700 d-flex gap-4">
-      <div class="">{{ listing.bedrooms }} beds</div>
-      <div class="">{{ listing.bathrooms }} baths</div>
+  </div>
+  <div class="flex flex-col gap-4">
+    <h3 class="text-lg font-semibold max-w-[260px]">{{ listing.address }}</h3>
+    <div class="flex gap-x-4">
+      <div class="flex items-center text-gray-600 gap-1">
+        <div class="text-[20px]">
+          <i class="fa-solid fa-bed mr-[3px]"></i>
+        </div>
+        <div class="">{{ listing.bedrooms }}</div>
+      </div>
+      <div class="flex items-center text-gray-600 gap-1">
+        <div class="text-[20px]">
+          <i class="fa-solid fa-bath mr-[3px]"></i>
+        </div>
+        <div class="">{{ listing.bathrooms }}</div>
+      </div>
+      <div class="flex items-center text-gray-600 gap-1">
+        <div class="text-[20px]">
+          <i class="fa-solid fa-expand mr-[4px]"></i>
+        </div>
+        <div class="">4000ft</div>
+      </div>
     </div>
+    <div class="text-lg font-semibold text-violet-600">{{ listing.price }}</div>
   </div>
 </div>
