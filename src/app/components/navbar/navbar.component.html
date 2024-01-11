@@ -1,0 +1,37 @@
+<header class="py-6 border-b bg-white">
+  <div class="container mx-auto flex justify-between items-center">
+    <a class="font-semibold text-lg" routerLink="/"> AYMEN NACER </a>
+
+    <div class="flex items-center gap-6">
+      <a
+        class="custom-color transition"
+        *ngIf="!authService.isAuthenticated()"
+        routerLink="/"
+      >
+        Home
+      </a>
+      <a
+        class="custom-color transition"
+        *ngIf="!authService.isAuthenticated()"
+        routerLink="/login"
+      >
+        Log in
+      </a>
+      <a
+        class="bg-black text-white px-4 py-3 rounded-lg transition custom-color2"
+        *ngIf="!authService.isAuthenticated()"
+        routerLink="/signup"
+      >
+        Sign up
+      </a>
+
+      <a
+        class="custom-color transition"
+        *ngIf="authService.isAuthenticated()"
+        routerLink="/profile"
+      >
+        Profile
+      </a>
+    </div>
+  </div>
+</header>
