@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home/home.component';
-import { LoginComponent } from './login/login/login.component';
-import { AddPropertyComponent } from './add-property/add-property/add-property.component';
-import { PropertyDetailsComponent } from './property-details/property-details/property-details.component';
-import { SignupComponent } from './signup/signup/signup.component';
-import { ProfileComponent } from './profile/profile/profile.component';
-import { SearchComponent } from './search/search/search.component';
+import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './pages/login/login.component';
+import { AddPropertyComponent } from './pages/add-property/add-property.component';
+import { PropertyDetailsComponent } from './pages/property-details/property-details.component';
+import { SignupComponent } from './pages/signup/signup.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { SearchComponent } from './pages/search/search.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
