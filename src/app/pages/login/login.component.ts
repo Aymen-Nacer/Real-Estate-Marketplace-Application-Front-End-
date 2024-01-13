@@ -11,6 +11,7 @@ import { NgForm } from '@angular/forms';
 export class LoginComponent {
   username = '';
   password = '';
+  email = '';
 
   constructor(private authService: AuthService, private router: Router) {
     this.authService.printProperties();
@@ -18,9 +19,10 @@ export class LoginComponent {
 
   login(loginForm: NgForm): void {
     console.log('username is ', this.username);
+    console.log('email is ', this.email);
     console.log('password is ', this.password);
     if (loginForm.valid) {
-      if (this.authService.login(this.username, this.password)) {
+      if (this.authService.login(this.email, this.password)) {
         console.log('Logged in the user successfuly');
       } else {
         console.log('Encountered error in Logging in');

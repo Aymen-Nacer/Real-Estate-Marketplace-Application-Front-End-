@@ -15,7 +15,7 @@ import { ListingsService } from '../../services/listings.service';
 export class ProfileComponent {
   username = this.authService.getCurrentUser().username;
   password = '';
-  email = '';
+  email = this.authService.getCurrentUser().email;
   showlistings = false;
   userListings: Listing[] = [
     {
@@ -43,19 +43,21 @@ export class ProfileComponent {
     private listingsService: ListingsService
   ) {
     this.authService.printProperties();
+    console.log(this.username);
   }
 
   onProfileUpdate(profileForm: NgForm): void {
     if (profileForm.valid) {
       if (
         this.usersService.findUserByCredentials(
-          this.authService.getCurrentUser().username,
+          this.authService.getCurrentUser().email,
           this.password
         )
       ) {
         const updatedUser: User = {
           ...this.authService.getCurrentUser(),
           username: this.username,
+          email: this.email,
         };
         if (this.usersService.updateUser(updatedUser)) {
           console.log(`the user ${this.username} was updated successfuly`);

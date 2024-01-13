@@ -22,7 +22,7 @@ export class SignupComponent {
     console.log('username is', this.username);
     console.log('password is', this.password);
     if (signupForm.valid) {
-      if (this.authService.signup(this.username, this.password)) {
+      if (this.authService.signup(this.username, this.email, this.password)) {
         console.log('signed up the user successfuly');
       } else {
         console.log('Encountered error in signing up');

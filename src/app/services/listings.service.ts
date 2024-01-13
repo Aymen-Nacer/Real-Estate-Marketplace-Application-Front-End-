@@ -29,6 +29,7 @@ export class ListingsService {
         userId: 1,
         username: 'aymennacer',
         password: '123',
+        email: 'aymennacer@gmail.com',
       },
     },
   ];

@@ -46,7 +46,6 @@
             <form #signupForm="ngForm" (ngSubmit)="signup(signupForm)">
               <input
                 type="text"
-                id="username"
                 [(ngModel)]="username"
                 name="username"
                 placeholder="Username"
@@ -55,7 +54,6 @@
               />
               <input
                 type="email"
-                id="email"
                 [(ngModel)]="email"
                 name="email"
                 placeholder="Email"
@@ -64,7 +62,6 @@
               />
               <input
                 type="password"
-                id="password"
                 [(ngModel)]="password"
                 name="password"
                 placeholder="Password"

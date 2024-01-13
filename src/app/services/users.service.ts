@@ -14,6 +14,7 @@ export class UsersService {
       userId: 1,
       username: 'aymennacer',
       password: '123',
+      email: 'aymennacer@gmail.com',
     },
   ];
 
@@ -62,9 +63,9 @@ export class UsersService {
     }
   }
 
-  findUserByCredentials(username: string, password: string): User | undefined {
+  findUserByCredentials(email: string, password: string): User | undefined {
     return this._users.find(
-      (u) => u.username === username && u.password === password
+      (u) => u.email === email && u.password === password
     );
   }
 

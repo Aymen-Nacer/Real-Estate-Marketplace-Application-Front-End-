@@ -60,6 +60,7 @@ export class SearchComponent implements OnInit {
       name: '',
       furnished: [true, false],
       parking: [true, false],
+      sortBy: -1,
     };
 
     filter.name = this.searchTerm;
@@ -69,6 +70,9 @@ export class SearchComponent implements OnInit {
       this.furnished === '' || this.furnished === 'false'
         ? [true, false]
         : [true];
+    if (this.sortBy === 'latest') {
+      filter.sortBy = 0;
+    }
 
     return filter;
   }

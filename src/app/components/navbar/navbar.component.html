@@ -3,13 +3,7 @@
     <a class="font-semibold text-lg" routerLink="/"> AYMEN NACER </a>
 
     <div class="flex items-center gap-6">
-      <a
-        class="custom-color transition"
-        *ngIf="!authService.isAuthenticated()"
-        routerLink="/"
-      >
-        Home
-      </a>
+      <a class="custom-color transition" routerLink="/"> Home </a>
       <a
         class="custom-color transition"
         *ngIf="!authService.isAuthenticated()"
@@ -31,6 +25,14 @@
         routerLink="/profile"
       >
         Profile
+      </a>
+
+      <a
+        class="custom-color transition"
+        *ngIf="authService.isAuthenticated()"
+        routerLink="/addProperty"
+      >
+        Add New Property
       </a>
     </div>
   </div>

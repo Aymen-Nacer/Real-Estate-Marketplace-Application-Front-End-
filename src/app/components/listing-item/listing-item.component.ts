@@ -22,6 +22,7 @@ export class ListingItemComponent {
       userId: 0,
       username: '',
       password: '',
+      email: '',
     },
   };
 }

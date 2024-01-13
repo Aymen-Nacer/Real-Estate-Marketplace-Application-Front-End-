@@ -19,23 +19,20 @@
           type="text"
           placeholder="Username"
           [(ngModel)]="username"
-          default-value="currentUser.username"
-          id="username"
+          name="username"
           class="border p-3 rounded-lg"
         />
         <input
           type="email"
           placeholder="Email"
-          id="email"
+          name="email"
           [(ngModel)]="email"
-          default-value="currentUser.email"
           class="border p-3 rounded-lg"
         />
         <input
           type="password"
           placeholder="Password"
           [(ngModel)]="password"
-          id="password"
           name="password"
           class="border p-3 rounded-lg"
         />
@@ -45,24 +42,12 @@
         >
           Update Profile
         </button>
-        <a
-          class="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95"
-          routerLink="/addProperty"
-        >
-          Add new Property
-        </a>
       </form>
       <div class="flex justify-between mt-5">
         <span (click)="onDeleteAccount()" class="text-red-700 cursor-pointer">
           Delete account
         </span>
-        <span
-          (click)="authService.logout()"
-          routerLink="/"
-          class="text-red-700 cursor-pointer"
-        >
-          Sign out
-        </span>
+        <span class="text-red-700 cursor-pointer"> Sign out </span>
       </div>
     </div>
 

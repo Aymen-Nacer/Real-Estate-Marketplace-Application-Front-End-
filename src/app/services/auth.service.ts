@@ -13,10 +13,11 @@ export class AuthService {
   private currentUser: User = {
     userId: 0,
     username: '',
+    email: '',
     password: '',
   };
 
-  signup(username: string, password: string): boolean {
+  signup(username: string, email: string, password: string): boolean {
     if (this.usersService.hasUser(username)) {
       return false;
     }
@@ -25,6 +26,7 @@ export class AuthService {
       userId: this.usersService.usersLength() + 1,
       username,
       password,
+      email,
     };
 
     this.usersService.addUser(newUser);
@@ -34,8 +36,8 @@ export class AuthService {
     return true;
   }
 
-  login(username: string, password: string): boolean {
-    const user = this.usersService.findUserByCredentials(username, password);
+  login(email: string, password: string): boolean {
+    const user = this.usersService.findUserByCredentials(email, password);
 
     if (user) {
       this.isLoggedIn = true;
@@ -53,6 +55,7 @@ export class AuthService {
       userId: 0,
       username: '',
       password: '',
+      email: '',
     };
   }
 

@@ -9,25 +9,25 @@
           <p class="text-lg">{{ listing.address }}</p>
         </div>
         <div class="flex gap-2 text-sm">
-          <div class="bg-green-500 text-white px-3 rounded-full">type</div>
-          <div class="bg-violet-500 text-white px-3 rounded-full">country</div>
+          <div class="custom-color rounded-full text-black px-3">type</div>
+          <div class="custom-color rounded-full text-black px-3">country</div>
         </div>
         <div class="">
-          <div class="text-3xl font-semibold text-violet-600">
+          <div class="text-4xl font-semibold text-black pb-3">
             {{ listing.price }}
           </div>
         </div>
       </div>
       <div class="flex flex-col items-center gap-8 lg:flex-row">
         <div class="max-w-[768px] flex flex-col gap-6">
-          <div class="">
+          <div class="h-[300px] sm:h-[500px]">
             <img
               [src]="listing.imageUrls[0]"
-              class="lg:h-[500px] w-full object-cover hover:scale-105 transition-scale duration-300"
+              class="h-full w-full object-cover"
               alt=""
             />
           </div>
-          <div class="text-violet-700 flex gap-6">
+          <div class="flex gap-6">
             <div class="flex gap-2 items-center">
               <i class="fa-solid fa-bed mr-[3px] text-2xl"></i>
               <div>{{ listing.bedrooms }}</div>
@@ -54,7 +54,7 @@
               <div class="font-bold text-lg house-agent-name">
                 {{ listing.user.username }}
               </div>
-              <a href="" class="text-violet-700 text-sm"> View Listings </a>
+              <a href="" class="text-sm text-blue-600"> View Listings </a>
             </div>
           </div>
           <form
@@ -97,14 +97,14 @@
             <div class="flex gap-2">
               <button
                 type="submit"
-                class="bg-violet-700 hover:bg-violet-800 text-white rounded p-4 text-sm w-full transition"
+                class="bg-black text-white custom-color2 rounded p-4 text-sm w-full transition"
                 [disabled]="contactForm.invalid"
               >
                 Send Message
               </button>
               <button
                 type="button"
-                class="border border-b-violet-700 text-violet-700 hover:border-violet-500 hover:text-violet-500 rounded p-4 text-sm w-full transition"
+                class="border border-b-black hover:border-black rounded p-4 text-sm w-full transition"
               >
                 Call
               </button>
