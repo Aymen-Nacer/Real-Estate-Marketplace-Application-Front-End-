@@ -12,7 +12,6 @@
         <input
           type="text"
           name="propertyName"
-          id="propertyName"
           [(ngModel)]="propertyName"
           placeholder="Property Name"
           class="border p-2 w-1/2"
@@ -20,8 +19,7 @@
         />
         <input
           type="tel"
-          name=""
-          id=""
+          name="address"
           placeholder="Address"
           class="border p-2 w-1/2"
           [(ngModel)]="address"
@@ -29,7 +27,6 @@
       </div>
       <textarea
         name="propertyDescription"
-        id="propertyDescription"
         cols="10"
         rows="3"
         [(ngModel)]="propertyDescription"
@@ -42,7 +39,7 @@
         <div class="flex items-center gap-2 flex-1">
           <input
             type="number"
-            id="bedrooms"
+            name="bedrooms"
             min="1"
             max="10"
             placeholder="Bedrooms"
@@ -54,7 +51,7 @@
         <div class="flex items-center gap-2 flex-1">
           <input
             type="number"
-            id="bathrooms"
+            name="bathrooms"
             min="1"
             max="10"
             required
@@ -66,7 +63,7 @@
         <div class="flex items-center gap-2 flex-1">
           <input
             type="number"
-            id="regularPrice"
+            name="propertyPrice"
             min="50"
             max="10000000"
             required
@@ -81,7 +78,7 @@
         <div class="flex gap-2">
           <input
             type="checkbox"
-            id="parking"
+            name="parking"
             class="w-5"
             [(ngModel)]="parking"
           />
@@ -90,7 +87,7 @@
         <div class="flex gap-2">
           <input
             type="checkbox"
-            id="furnished"
+            name="furnished"
             class="w-5"
             [(ngModel)]="furnished"
           />

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
-import { AuthService } from '../../services/auth.service';
 import { Listing } from '../../models/listing';
 
 @Component({
@@ -14,41 +13,46 @@ export class AddPropertyComponent {
   propertyName = '';
   propertyDescription = '';
   address = '';
-  bedrooms = -1;
-  bathrooms = -1;
+  bedrooms = 0;
+  bathrooms = 0;
   parking = false;
   furnished = false;
-  propertyPrice = -1;
+  propertyPrice = 0;
 
   constructor(
     private router: Router,
-    private listingsService: ListingsService,
-    private authService: AuthService
+    private listingsService: ListingsService
   ) {}
 
   onAddProperty(newPropertyForm: NgForm): void {
     if (newPropertyForm.valid) {
       const listing: Listing = {
-        propertyId: 2,
         imageUrls: [
           'https://picsum.photos/800/300?random=1',
           'https://picsum.photos/800/300?random=1',
         ],
-        address: '123 Main St',
-        bedrooms: 3,
-        bathrooms: 2,
-        price: 100000,
-        parking: true,
-        furnished: false,
+        address: this.address,
+        bedrooms: this.bedrooms,
+        bathrooms: this.bathrooms,
+        price: this.propertyPrice,
+        parking: this.parking,
+        furnished: this.furnished,
         name: this.propertyName,
         description: this.propertyDescription,
-        user: this.authService.getCurrentUser(),
+        userRef: '1',
       };
-      this.listingsService.addProperty(listing);
 
-      console.log('added successfuly!');
-      console.log('listings', this.listingsService.printProperties());
-      this.router.navigate(['']);
+      console.log('before adding', listing);
+      this.listingsService.addProperty(listing).subscribe({
+        next: (addedListing) => {
+          console.log('Property added successfully:', addedListing);
+          console.log('listings', this.listingsService.printProperties());
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          console.error('Error adding property:', error);
+        },
+      });
     } else {
       alert('Invalid username or password');
     }
