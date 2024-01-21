@@ -1,75 +1,37 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Listing } from '../models/listing';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  private usersSubject = new BehaviorSubject<User[]>([]);
-  users$: Observable<User[]> = this.usersSubject.asObservable();
+  private baseUrl = 'http://localhost:8080/api/users';
 
-  private _users: User[] = [
-    {
-      userId: 1,
-      username: 'aymennacer',
-      password: '123',
-      email: 'aymennacer@gmail.com',
-    },
-  ];
+  constructor(private http: HttpClient) {}
 
-  constructor() {
-    this.usersSubject.next(this._users);
+  getUserProperties(userId: number): Observable<Listing[]> {
+    return this.http.get<Listing[]>(`${this.baseUrl}/listings/${userId}`);
   }
 
-  hasUser(username: string): boolean {
-    if (this._users.some((u) => u.username === username)) {
-      return true;
-    }
-    return false;
+  deleteUser(userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/delete/${userId}`);
   }
 
-  usersLength(): number {
-    return this._users.length;
-  }
-
-  addUser(user: User) {
-    this._users.push(user);
-    this.usersSubject.next([...this._users]);
-  }
-  DeleteUser(user: User): boolean {
-    const index = this._users.findIndex((u) => u.userId === user.userId);
-
-    if (index !== -1) {
-      this._users.splice(index, 1); // Remove the user from the array
-      this.usersSubject.next([...this._users]);
-      return true;
-    } else {
-      return false; // User not found
-    }
-  }
-
-  updateUser(updatedUser: User): boolean {
-    const index = this._users.findIndex(
-      (user) => user.userId === updatedUser.userId
+  updateUser(updatedUser: User): Observable<User> {
+    return this.http.put<User>(
+      `${this.baseUrl}/update/${updatedUser.id}`,
+      updatedUser
     );
-
-    if (index !== -1) {
-      this._users[index] = { ...this._users[index], ...updatedUser };
-      this.usersSubject.next([...this._users]);
-      return true;
-    } else {
-      return false;
-    }
   }
 
-  findUserByCredentials(email: string, password: string): User | undefined {
-    return this._users.find(
-      (u) => u.email === email && u.password === password
-    );
+  getUser(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${userId}`);
   }
 
   printProperties(): void {
-    console.log('users:', this._users);
+    console.log('users:');
   }
 }

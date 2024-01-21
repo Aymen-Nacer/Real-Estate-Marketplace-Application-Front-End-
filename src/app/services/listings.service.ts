@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Listing } from '../models/listing';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ListingFilter } from '../models/listingFilter';
 
 @Injectable({
   providedIn: 'root',
@@ -10,64 +10,58 @@ export class ListingsService {
   private listingsSubject = new BehaviorSubject<Listing[]>([]);
   listings$: Observable<Listing[]> = this.listingsSubject.asObservable();
 
-  private _listings: Listing[] = [
-    {
-      propertyId: 1,
-      imageUrls: [
-        'https://picsum.photos/800/300?random=1',
-        'https://picsum.photos/800/300?random=1',
-      ],
-      name: 'rocky',
-      description: 'This is a sample description.',
-      address: '123 Main St',
-      bedrooms: 3,
-      bathrooms: 2,
-      price: 100000,
-      parking: true,
-      furnished: false,
-      user: {
-        userId: 1,
-        username: 'aymennacer',
-        password: '123',
-        email: 'aymennacer@gmail.com',
-      },
-    },
-  ];
+  private baseUrl = 'http://localhost:8080/api/listings';
 
-  constructor() {
-    this.listingsSubject.next(this._listings);
+  constructor(private http: HttpClient) {
+    this.loadListings();
   }
+
+  private _listings: Listing[] = [];
+
   get listing(): Listing[] {
     return this._listings;
   }
 
-  addProperty(listing: Listing) {
-    this._listings.push(listing);
-    this.listingsSubject.next([...this._listings]); // Notify subscribers
+  addProperty(listing: Listing): Observable<Listing> {
+    return this.http.post<Listing>(`${this.baseUrl}/create`, listing);
   }
 
-  findPropertyById(propertyId: number): Listing | undefined {
-    return this._listings.find((listing) => listing.propertyId === propertyId);
+  deleteProperty(propertyId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/delete/${propertyId}`);
   }
 
-  findPropertiesByUserId(userId: number): Listing[] {
-    return this._listings.filter(
-      (listing) => listing.user && listing.user.userId === userId
+  updateProperty(
+    propertyId: number,
+    updatedListing: Listing
+  ): Observable<Listing> {
+    return this.http.put<Listing>(
+      `${this.baseUrl}/update/${propertyId}`,
+      updatedListing
     );
   }
 
-  filterListings(filter: ListingFilter): Listing[] {
-    return this._listings.filter((listing) => {
-      const nameMatch = listing.name.toLowerCase().includes(filter.name);
-
-      const furnishedMatch = filter.furnished.includes(listing.furnished);
-
-      const parkingMatch = filter.parking.includes(listing.parking);
-
-      return nameMatch && furnishedMatch && parkingMatch;
-    });
+  getProperty(propertyId: number): Observable<Listing | undefined> {
+    return this.http.get<Listing>(`${this.baseUrl}/get/${propertyId}`);
   }
+
+  getProperties(filter: string) {
+    return this.http.get<Listing[]>(`${this.baseUrl}/get?${filter}`);
+  }
+
   printProperties(): void {
     console.log('listings:', this._listings);
+  }
+
+  loadListings(): void {
+    this.getProperties('searchTerm=').subscribe({
+      error: (error) => {
+        console.error('Error fetching listings:', error);
+      },
+      next: (listings) => {
+        this._listings = listings;
+
+        this.listingsSubject.next([...this._listings]);
+      },
+    });
   }
 }

@@ -1,75 +1,90 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { User } from '../models/user';
-import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private isLoggedIn = false;
-
-  constructor(private usersService: UsersService) {}
-
-  private currentUser: User = {
-    userId: 0,
+  private loggedIn = false;
+  private user: User = {
+    id: 0,
     username: '',
     email: '',
     password: '',
   };
 
-  signup(username: string, email: string, password: string): boolean {
-    if (this.usersService.hasUser(username)) {
-      return false;
-    }
+  private baseUrl = 'http://localhost:8080/api/auth';
 
-    const newUser: User = {
-      userId: this.usersService.usersLength() + 1,
-      username,
-      password,
-      email,
-    };
+  constructor(private http: HttpClient) {}
 
-    this.usersService.addUser(newUser);
-    this.isLoggedIn = true;
-    this.currentUser = newUser;
-
-    return true;
+  get isLoggedIn(): boolean {
+    return this.loggedIn;
   }
 
-  login(email: string, password: string): boolean {
-    const user = this.usersService.findUserByCredentials(email, password);
-
-    if (user) {
-      this.isLoggedIn = true;
-      this.currentUser = user;
-      return true;
-    } else {
-      this.isLoggedIn = false;
-      return false;
-    }
+  get currentUser(): User {
+    return this.user;
   }
 
-  logout(): void {
-    this.isLoggedIn = false;
-    this.currentUser = {
-      userId: 0,
-      username: '',
-      password: '',
-      email: '',
-    };
+  login(email: string, password: string): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this.baseUrl}/signin`,
+        { email, password },
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((response) => {
+          if (response.success) {
+            this.loggedIn = true;
+            this.user = response.user;
+          }
+        })
+      );
+  }
+
+  signup(username: string, email: string, password: string): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/signup`,
+      {
+        username,
+        email,
+        password,
+      },
+      { observe: 'response' }
+    );
+  }
+
+  logout(): Observable<any> {
+    return this.http
+      .get<any>(`${this.baseUrl}/signout`, {
+        withCredentials: true,
+      })
+      .pipe(
+        tap(() => {
+          this.loggedIn = false;
+          this.user = {
+            id: 0,
+            username: '',
+            email: '',
+            password: '',
+          };
+        })
+      );
   }
 
   isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    return this.loggedIn;
   }
 
   getCurrentUser(): User {
-    return this.currentUser;
+    return this.user;
   }
 
   printProperties(): void {
-    console.log('isLoggedIn:', this.isLoggedIn);
-    console.log('currentUser:', this.currentUser);
-    console.log('users:', this.usersService.printProperties());
+    console.log('isLoggedIn:', this.loggedIn);
+    console.log('currentUser:', this.user);
   }
 }
