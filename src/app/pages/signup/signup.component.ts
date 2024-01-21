@@ -21,15 +21,26 @@ export class SignupComponent {
     console.log('email is', this.email);
     console.log('username is', this.username);
     console.log('password is', this.password);
-    if (signupForm.valid) {
-      if (this.authService.signup(this.username, this.email, this.password)) {
-        console.log('signed up the user successfuly');
-      } else {
-        console.log('Encountered error in signing up');
-      }
-      this.authService.printProperties();
 
-      this.router.navigate(['']);
+    if (signupForm.valid) {
+      this.authService
+        .signup(this.username, this.email, this.password)
+        .subscribe({
+          next: (response) => {
+            console.log('Signup successful');
+            this.authService.printProperties();
+            this.router.navigate(['']);
+          },
+          error: (error) => {
+            if (error.status === 200) {
+              console.log('Signup successful');
+              this.authService.printProperties();
+              this.router.navigate(['']);
+            } else {
+              console.log('Encountered error in signing up');
+            }
+          },
+        });
     } else {
       alert('Invalid username or password');
     }

@@ -21,15 +21,14 @@ export class PropertyDetailsComponent implements OnInit {
     let propertyId = -1;
     this.route.paramMap.subscribe((params) => {
       propertyId = parseInt(params.get('id') || '-1', 10);
-      const fetchedProperty = this.listingsService.findPropertyById(propertyId);
-
-      if (fetchedProperty) {
-        this.listing = fetchedProperty;
-      } else {
-        console.log(
-          `Property with ID ${propertyId} does not exist in the database.`
-        );
-      }
+      this.listingsService.getProperty(propertyId).subscribe({
+        next: (fetchedListing: Listing | undefined) => {
+          this.listing = fetchedListing;
+        },
+        error: (error) => {
+          console.error('Error fetching property:', error);
+        },
+      });
     });
   }
 

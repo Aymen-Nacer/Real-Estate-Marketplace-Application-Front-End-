@@ -25,12 +25,13 @@ export class HomeComponent implements OnInit {
         this.listings = listings;
       }
     );
+    console.log(this.listings);
   }
 
   onSubmitForm() {
     console.log('search term is', this.searchTerm);
     this.router.navigate(['/search'], {
-      queryParams: { searchTerm: this.searchTerm, sortBy: 'Latest' },
+      queryParams: { searchTerm: this.searchTerm },
     });
   }
 

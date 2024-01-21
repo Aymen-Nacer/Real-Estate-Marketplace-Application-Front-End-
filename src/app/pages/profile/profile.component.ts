@@ -5,7 +5,6 @@ import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Listing } from '../../models/listing';
-import { ListingsService } from '../../services/listings.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,32 +14,13 @@ import { ListingsService } from '../../services/listings.service';
 export class ProfileComponent {
   username = this.authService.getCurrentUser().username;
   password = '';
-  email = this.authService.getCurrentUser().email;
   showlistings = false;
-  userListings: Listing[] = [
-    {
-      propertyId: 2,
-      imageUrls: [
-        'https://picsum.photos/800/300?random=1',
-        'https://picsum.photos/800/300?random=1',
-      ],
-      address: '123 Main St',
-      bedrooms: 3,
-      bathrooms: 2,
-      price: 100000,
-      parking: true,
-      furnished: false,
-      name: 'test name',
-      description: 'test description',
-      user: this.authService.getCurrentUser(),
-    },
-  ];
+  userListings: Listing[] = [];
 
   constructor(
     public authService: AuthService,
     private usersService: UsersService,
-    private router: Router,
-    private listingsService: ListingsService
+    private router: Router
   ) {
     this.authService.printProperties();
     console.log(this.username);
@@ -48,29 +28,22 @@ export class ProfileComponent {
 
   onProfileUpdate(profileForm: NgForm): void {
     if (profileForm.valid) {
-      if (
-        this.usersService.findUserByCredentials(
-          this.authService.getCurrentUser().email,
-          this.password
-        )
-      ) {
-        const updatedUser: User = {
-          ...this.authService.getCurrentUser(),
-          username: this.username,
-          email: this.email,
-        };
-        if (this.usersService.updateUser(updatedUser)) {
-          console.log(`the user ${this.username} was updated successfuly`);
-          this.authService.login(this.username, this.password);
-        } else {
-          console.log(`the user ${this.username} was not found for updating!`);
-        }
-      } else {
-        console.log(
-          `the user ${this.username} credentials are wrong try again!`
-        );
-      }
-      this.usersService.printProperties();
+      const updatedUser: User = {
+        ...this.authService.getCurrentUser(),
+        username: this.username,
+        password: this.password,
+      };
+
+      console.log('user to be updated is ', updatedUser);
+
+      this.usersService.updateUser(updatedUser).subscribe({
+        next: (response) => {
+          console.log(`The user ${this.username} was updated successfully`);
+        },
+        error: (updateError) => {
+          console.error('Error updating user:', updateError);
+        },
+      });
     } else {
       alert('Invalid username or password');
     }
@@ -78,27 +51,60 @@ export class ProfileComponent {
 
   onDeleteAccount() {
     const currentUser = this.authService.getCurrentUser();
-    if (this.usersService.DeleteUser(currentUser)) {
-      console.log(`the user ${currentUser.username} was deleted successfuly`);
-      this.authService.logout();
-      this.router.navigate(['']);
-    } else {
-      console.log(`the user ${currentUser.username} was not found`);
-    }
-    this.usersService.printProperties();
+
+    this.usersService.deleteUser(currentUser.id).subscribe({
+      next: () => {
+        console.log(
+          `The user ${currentUser.username} was deleted successfully`
+        );
+
+        this.authService.logout().subscribe({
+          next: () => {
+            console.log('Logout successful');
+            this.usersService.printProperties();
+            this.router.navigate(['']);
+          },
+          error: (logoutError) => {
+            console.error('Error during logout:', logoutError);
+          },
+        });
+      },
+      error: (deleteError) => {
+        console.log(`Error deleting the user ${currentUser.username}`);
+      },
+    });
   }
 
   onShowListings() {
     this.showlistings = true;
-    const currentUserId = this.authService.getCurrentUser().userId;
-    const listingsByUserId =
-      this.listingsService.findPropertiesByUserId(currentUserId);
+    const currentUserId = this.authService.getCurrentUser().id;
 
-    if (listingsByUserId.length === 0) {
-      console.log('No properties found for user ID', currentUserId);
-    } else {
-      console.log('listings was successfuly found: ', listingsByUserId);
-      this.userListings = listingsByUserId;
-    }
+    this.usersService.getUserProperties(currentUserId).subscribe({
+      next: (listings) => {
+        console.log('Received listings:', listings);
+        if (listings.length === 0) {
+          console.log('No properties found for user ID', currentUserId);
+        } else {
+          console.log('Listings were successfully found: ');
+          this.userListings = listings;
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching listings:', error);
+      },
+    });
+  }
+
+  onSignout() {
+    this.authService.logout().subscribe({
+      next: (response) => {
+        console.log(response);
+        this.authService.printProperties();
+        this.router.navigate(['']);
+      },
+      error: (error) => {
+        console.log('Encountered error in sign-out', error);
+      },
+    });
   }
 }

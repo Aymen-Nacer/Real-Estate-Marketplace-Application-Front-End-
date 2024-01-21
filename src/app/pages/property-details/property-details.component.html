@@ -8,10 +8,6 @@
           <h3 class="text-2xl font-semibold">{{ listing.name }}</h3>
           <p class="text-lg">{{ listing.address }}</p>
         </div>
-        <div class="flex gap-2 text-sm">
-          <div class="custom-color rounded-full text-black px-3">type</div>
-          <div class="custom-color rounded-full text-black px-3">country</div>
-        </div>
         <div class="">
           <div class="text-4xl font-semibold text-black pb-3">
             {{ listing.price }}
@@ -20,10 +16,10 @@
       </div>
       <div class="flex flex-col items-center gap-8 lg:flex-row">
         <div class="max-w-[768px] flex flex-col gap-6">
-          <div class="h-[300px] sm:h-[500px]">
+          <div class="lg:w-[768px] lg:h-[500px]">
             <img
               [src]="listing.imageUrls[0]"
-              class="h-full w-full object-cover"
+              class="object-cover h-full w-full"
               alt=""
             />
           </div>
@@ -52,7 +48,7 @@
             </div>
             <div class="">
               <div class="font-bold text-lg house-agent-name">
-                {{ listing.user.username }}
+                listing.user.username
               </div>
               <a href="" class="text-sm text-blue-600"> View Listings </a>
             </div>

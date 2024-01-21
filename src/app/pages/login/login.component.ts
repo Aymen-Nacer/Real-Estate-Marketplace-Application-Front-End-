@@ -18,17 +18,24 @@ export class LoginComponent {
   }
 
   login(loginForm: NgForm): void {
-    console.log('username is ', this.username);
     console.log('email is ', this.email);
     console.log('password is ', this.password);
+
     if (loginForm.valid) {
-      if (this.authService.login(this.email, this.password)) {
-        console.log('Logged in the user successfuly');
-      } else {
-        console.log('Encountered error in Logging in');
-      }
-      this.authService.printProperties();
-      this.router.navigate(['']);
+      this.authService.login(this.email, this.password).subscribe({
+        next: (response) => {
+          if (response.success) {
+            console.log('Logged in the user successfully');
+            this.authService.printProperties();
+            this.router.navigate(['']);
+          } else {
+            console.log(response.message);
+          }
+        },
+        error: (error) => {
+          console.log('Encountered error in logging in', error);
+        },
+      });
     } else {
       alert('Invalid username or password');
     }

@@ -48,12 +48,12 @@
         <label class="font-semibold">Sort:</label>
         <select
           default-value="created_at_desc"
-          [(ngModel)]="sortBy"
-          id="sortBy"
+          [(ngModel)]="sortOptions"
+          name="sortOptions"
           class="border rounded-lg p-3"
         >
-          <option value="regularPrice_desc">Price high to low</option>
-          <option value="regularPrice_asc">Price low to hight</option>
+          <option value="price_desc">Price high to low</option>
+          <option value="price_asc">Price low to high</option>
           <option value="createdAt_desc">Latest</option>
           <option value="createdAt_asc">Oldest</option>
         </select>

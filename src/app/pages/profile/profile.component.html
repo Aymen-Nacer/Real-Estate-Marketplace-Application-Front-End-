@@ -22,13 +22,7 @@
           name="username"
           class="border p-3 rounded-lg"
         />
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          [(ngModel)]="email"
-          class="border p-3 rounded-lg"
-        />
+
         <input
           type="password"
           placeholder="Password"
@@ -47,7 +41,9 @@
         <span (click)="onDeleteAccount()" class="text-red-700 cursor-pointer">
           Delete account
         </span>
-        <span class="text-red-700 cursor-pointer"> Sign out </span>
+        <span class="text-red-700 cursor-pointer" (click)="onSignout()">
+          Sign out
+        </span>
       </div>
     </div>
 
@@ -73,7 +69,7 @@
           *ngFor="let listing of userListings"
           class="border rounded-lg p-3 flex justify-between items-center gap-4 mb-10"
         >
-          <a [routerLink]="'/propertyDetails/' + listing.propertyId">
+          <a [routerLink]="'/propertyDetails/' + listing.id">
             <img
               [src]="listing.imageUrls[0]"
               alt="listing cover"
@@ -82,7 +78,7 @@
           </a>
           <a
             class="text-slate-700 font-semibold hover:underline truncate flex-1"
-            [routerLink]="'/propertyDetails/' + listing.propertyId"
+            [routerLink]="'/propertyDetails/' + listing.id"
           >
             <p>{{ listing.name }}</p>
           </a>

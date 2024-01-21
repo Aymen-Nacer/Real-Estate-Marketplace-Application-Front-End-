@@ -45,14 +45,6 @@
           <div class="mx-auto max-w-xs">
             <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
               <input
-                type="text"
-                name="username"
-                [(ngModel)]="username"
-                placeholder="Username"
-                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                required
-              />
-              <input
                 type="email"
                 name="email"
                 [(ngModel)]="email"
