@@ -8,7 +8,7 @@ import { Listing } from '../../models/listing';
 })
 export class ListingItemComponent {
   @Input() listing: Listing = {
-    propertyId: 1,
+    id: 1,
     imageUrls: [],
     name: '',
     description: '',
@@ -18,11 +18,6 @@ export class ListingItemComponent {
     price: 0,
     parking: false,
     furnished: false,
-    user: {
-      userId: 0,
-      username: '',
-      password: '',
-      email: '',
-    },
+    userRef: '1',
   };
 }

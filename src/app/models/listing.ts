@@ -1,7 +1,5 @@
-import { User } from './user';
-
 export interface Listing {
-  propertyId: number;
+  id?: number;
   imageUrls: string[];
   name: string;
   description: string;
@@ -11,5 +9,5 @@ export interface Listing {
   price: number;
   parking: boolean;
   furnished: boolean;
-  user: User;
+  userRef: string;
 }

@@ -2,17 +2,13 @@
   class="bg-white flex flex-col gap-3 shadow-1 p-2 rounded-xl w-full max-w-[352px] mx-auto cursor-pointer hover:shadow-2xl transition custom-font"
 >
   <div class="flex flex-col">
-    <a [routerLink]="['/propertyDetails', listing.propertyId]">
+    <a [routerLink]="['/propertyDetails', listing.id]">
       <img
         [src]="listing.imageUrls[0]"
         alt="listing cover"
         class="rounded-xl h-[220px] lg:h-[320px] w-full object-cover"
       />
     </a>
-    <div class="flex gap-x-2 text-sm mt-4 px-3 custom-font-weight">
-      <span class="custom-color rounded-full text-black px-3"> Type </span>
-      <span class="custom-color rounded-full text-black px-3"> Country </span>
-    </div>
   </div>
   <div class="flex flex-col gap-2 px-3">
     <div class="flex items-center gap-1 mt-2">
