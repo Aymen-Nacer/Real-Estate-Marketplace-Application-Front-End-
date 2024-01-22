@@ -11,10 +11,10 @@ import { Listing } from '../../models/listing';
 })
 export class SearchComponent implements OnInit {
   searchTerm = '';
-  parking = '';
-  furnished = '';
-  sortOptions = '';
-  sortBy = '';
+  parking = false;
+  furnished = false;
+  sortOptions = 'createdAt_desc';
+  sort = '';
   order = '';
 
   listings: Listing[] = [];
@@ -29,6 +29,16 @@ export class SearchComponent implements OnInit {
     this.listingService.printProperties();
 
     this.route.queryParamMap.subscribe((queryParams) => {
+      this.searchTerm = queryParams.get('searchTerm') || '';
+      this.furnished = queryParams.get('furnished') === 'true' ? true : false;
+      this.parking = queryParams.get('parking') === 'true' ? true : false;
+      const sortParam = queryParams.get('sort');
+      const orderParam = queryParams.get('order');
+
+      if (sortParam && orderParam) {
+        this.sortOptions = `${sortParam}_${orderParam}`;
+      }
+
       const queryParamsString = queryParams.keys
         .map((key) => `${key}=${queryParams.getAll(key).join(',')}`)
         .join('&');
@@ -47,10 +57,10 @@ export class SearchComponent implements OnInit {
   onSearchSubmit(profileForm: NgForm): void {
     if (profileForm.valid) {
       if (this.sortOptions.startsWith('price')) {
-        this.sortBy = 'price';
+        this.sort = 'price';
         this.order = this.sortOptions.endsWith('desc') ? 'desc' : 'asc';
       } else if (this.sortOptions.startsWith('createdAt')) {
-        this.sortBy = 'createdAt';
+        this.sort = 'createdAt';
         this.order = this.sortOptions.endsWith('desc') ? 'desc' : 'asc';
       } else {
         console.error('Invalid sort option');
@@ -60,7 +70,7 @@ export class SearchComponent implements OnInit {
           searchTerm: this.searchTerm,
           parking: this.parking || 'false',
           furnished: this.furnished || 'false',
-          sortBy: this.sortBy || 'createdAt',
+          sort: this.sort || 'createdAt',
           order: this.order || 'desc',
         },
       });

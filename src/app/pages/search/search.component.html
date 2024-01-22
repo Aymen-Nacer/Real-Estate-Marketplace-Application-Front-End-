@@ -24,22 +24,18 @@
         <div class="flex gap-2">
           <input
             type="checkbox"
-            id="parking"
             [(ngModel)]="parking"
             name="parking"
             class="w-5"
-            checked="sidebardata.parking"
           />
           <span>Parking</span>
         </div>
         <div class="flex gap-2">
           <input
             type="checkbox"
-            id="furnished"
             class="w-5"
             [(ngModel)]="furnished"
             name="furnished"
-            checked="sidebardata.furnished"
           />
           <span>Furnished</span>
         </div>
@@ -47,7 +43,6 @@
       <div class="flex items-center gap-2">
         <label class="font-semibold">Sort:</label>
         <select
-          default-value="created_at_desc"
           [(ngModel)]="sortOptions"
           name="sortOptions"
           class="border rounded-lg p-3"
