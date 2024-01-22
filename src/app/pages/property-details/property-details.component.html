@@ -25,16 +25,30 @@
           </div>
           <div class="flex gap-6">
             <div class="flex gap-2 items-center">
-              <i class="fa-solid fa-bed mr-[3px] text-2xl"></i>
+              <i class="fa-solid fa-bed mr-[1px] text-xl"></i>
               <div>{{ listing.bedrooms }}</div>
             </div>
             <div class="flex gap-2 items-center">
-              <i class="fa-solid fa-bath mr-[3px] text-2xl"></i>
+              <i class="fa-solid fa-bath mr-[1px] text-xl"></i>
               <div>{{ listing.bathrooms }}</div>
             </div>
             <div class="flex gap-2 items-center">
-              <i class="fa-solid fa-expand mr-[4px] text-2xl"></i>
-              <div>4000ft</div>
+              <i class="fa-solid fa-couch mr-[1px] text-xl"></i>
+              <div>
+                <ng-container *ngIf="listing.furnished; else notFurnished">
+                  Furnished
+                </ng-container>
+                <ng-template #notFurnished> Not Furnished </ng-template>
+              </div>
+            </div>
+            <div class="flex gap-2 items-center">
+              <i class="fas fa-parking mr-[1px] text-xl"></i>
+              <div>
+                <ng-container *ngIf="listing.parking; else noParking">
+                  With Parking
+                </ng-container>
+                <ng-template #noParking> No Parking </ng-template>
+              </div>
             </div>
           </div>
           <div>{{ listing.description }}</div>
