@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Listing } from '../models/listing';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ export class ListingsService {
 
   private baseUrl = 'http://localhost:8080/api/listings';
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+  ) {
     this.loadListings();
   }
 
@@ -53,9 +57,12 @@ export class ListingsService {
   }
 
   loadListings(): void {
-    this.getProperties('searchTerm=').subscribe({
+    this.getProperties('searchTerm=&limit=3').subscribe({
       error: (error) => {
-        console.error('Error fetching listings:', error);
+        this.messageService.showAlert(
+          'Error fetching listings. Please try again.',
+          'error'
+        );
       },
       next: (listings) => {
         this._listings = listings;

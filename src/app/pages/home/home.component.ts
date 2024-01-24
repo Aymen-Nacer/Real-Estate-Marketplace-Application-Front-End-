@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.listingsSubscription = this.listingService.listings$.subscribe(
       (listings) => {
         this.listings = listings;

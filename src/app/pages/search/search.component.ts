@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
 import { Listing } from '../../models/listing';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-search',
@@ -22,12 +23,11 @@ export class SearchComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private listingService: ListingsService
+    private listingService: ListingsService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
-    this.listingService.printProperties();
-
     this.route.queryParamMap.subscribe((queryParams) => {
       this.searchTerm = queryParams.get('searchTerm') || '';
       this.furnished = queryParams.get('furnished') === 'true' ? true : false;
@@ -45,11 +45,14 @@ export class SearchComponent implements OnInit {
 
       this.listingService.getProperties(queryParamsString).subscribe({
         error: (error) => {
-          console.error('Error fetching listings:', error);
-        }, // errorHandler
+          this.messageService.showAlert(
+            'Error fetching listings. Please try again.',
+            'error'
+          );
+        },
         next: (listings) => {
           this.listings = listings;
-        }, // nextHandler
+        },
       });
     });
   }
@@ -63,7 +66,7 @@ export class SearchComponent implements OnInit {
         this.sort = 'createdAt';
         this.order = this.sortOptions.endsWith('desc') ? 'desc' : 'asc';
       } else {
-        console.error('Invalid sort option');
+        this.messageService.showAlert('Invalid sort option', 'error');
       }
       this.router.navigate(['/search'], {
         queryParams: {
@@ -75,7 +78,10 @@ export class SearchComponent implements OnInit {
         },
       });
     } else {
-      alert('Invalid username or password');
+      this.messageService.showAlert(
+        'Invalid search criteria. Please check your inputs and try again.',
+        'error'
+      );
     }
   }
 }

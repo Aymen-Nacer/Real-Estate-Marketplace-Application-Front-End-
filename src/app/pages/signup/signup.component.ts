@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-signup',
@@ -13,7 +14,11 @@ export class SignupComponent {
   password = '';
   email = '';
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService
+  ) {
     this.authService.printProperties();
   }
 
@@ -27,22 +32,34 @@ export class SignupComponent {
         .signup(this.username, this.email, this.password)
         .subscribe({
           next: (response) => {
-            console.log('Signup successful');
+            this.messageService.showAlert(
+              'Signup successful. Welcome!',
+              'success'
+            );
             this.authService.printProperties();
             this.router.navigate(['']);
           },
           error: (error) => {
             if (error.status === 200) {
-              console.log('Signup successful');
+              this.messageService.showAlert(
+                'Signup successful. Welcome!',
+                'success'
+              );
               this.authService.printProperties();
               this.router.navigate(['']);
             } else {
-              console.log('Encountered error in signing up');
+              this.messageService.showAlert(
+                'Encountered error in signing up. Please try again.',
+                'error'
+              );
             }
           },
         });
     } else {
-      alert('Invalid username or password');
+      this.messageService.showAlert(
+        'Invalid username or password. Please check your inputs and try again.',
+        'error'
+      );
     }
   }
 }

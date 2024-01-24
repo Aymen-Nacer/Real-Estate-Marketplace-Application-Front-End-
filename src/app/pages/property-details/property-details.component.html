@@ -57,14 +57,18 @@
           class="bg-white flex-1 w-full mb-auto border border-gray-300 rounded-lg px-6 py-8 flex flex-col gap-8"
         >
           <div class="flex items-center gap-4">
-            <div class="w-20 h-20 p-1 border border-gray-300 rounded-full">
-              <img src="" alt="" />
+            <div class="w-20 h-20 border border-black-300 rounded-full">
+              <img
+                src="{{ landlord.avatar }}"
+                alt="Landlord Avatar"
+                class="w-full h-full object-cover rounded-full"
+              />
             </div>
+
             <div class="">
               <div class="font-bold text-lg house-agent-name">
-                listing.user.username
+                {{ landlord.username }}
               </div>
-              <a href="" class="text-sm text-blue-600"> View Listings </a>
             </div>
           </div>
           <form

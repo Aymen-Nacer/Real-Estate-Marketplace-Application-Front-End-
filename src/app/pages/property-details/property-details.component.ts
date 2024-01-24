@@ -3,6 +3,9 @@ import { Listing } from '../../models/listing';
 import { ActivatedRoute } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
 import { NgForm } from '@angular/forms';
+import { User } from '../../models/user';
+import { UsersService } from '../../services/users.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-property-details',
@@ -10,11 +13,32 @@ import { NgForm } from '@angular/forms';
   styleUrl: './property-details.component.css',
 })
 export class PropertyDetailsComponent implements OnInit {
-  listing: Listing | undefined;
+  listing: Listing = {
+    imageUrls: [],
+    name: '',
+    description: '',
+    address: '',
+    bedrooms: 0,
+    bathrooms: 0,
+    price: 0,
+    parking: false,
+    furnished: false,
+    userId: '',
+  };
+
+  landlord: User = {
+    id: 0,
+    username: '',
+    email: '',
+    password: '',
+    avatar: '',
+  };
 
   constructor(
     private route: ActivatedRoute,
-    private listingsService: ListingsService
+    private listingsService: ListingsService,
+    private usersService: UsersService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -22,11 +46,32 @@ export class PropertyDetailsComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       propertyId = parseInt(params.get('id') || '-1', 10);
       this.listingsService.getProperty(propertyId).subscribe({
-        next: (fetchedListing: Listing | undefined) => {
-          this.listing = fetchedListing;
+        next: (fetchedListing) => {
+          if (fetchedListing) {
+            this.listing = fetchedListing;
+
+            const userId = this.listing.userId || '-1';
+
+            this.usersService.getUser(parseInt(userId)).subscribe({
+              next: (user) => {
+                if (user) {
+                  this.landlord = user;
+                }
+              },
+              error: (error) => {
+                this.messageService.showAlert(
+                  'Error fetching user. Please try again.',
+                  'error'
+                );
+              },
+            });
+          }
         },
         error: (error) => {
-          console.error('Error fetching property:', error);
+          this.messageService.showAlert(
+            'Error fetching property. Please try again.',
+            'error'
+          );
         },
       });
     });

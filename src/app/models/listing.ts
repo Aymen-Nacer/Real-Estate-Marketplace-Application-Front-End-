@@ -9,5 +9,5 @@ export interface Listing {
   price: number;
   parking: boolean;
   furnished: boolean;
-  userRef: string;
+  userId: string;
 }

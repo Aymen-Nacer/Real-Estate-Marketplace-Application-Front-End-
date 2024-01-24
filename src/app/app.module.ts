@@ -16,6 +16,7 @@ import { SearchComponent } from './pages/search/search.component';
 import { ServicesCardComponent } from './components/services-card/services-card.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
     SearchComponent,
     ServicesCardComponent,
     FooterComponent,
+    AlertComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

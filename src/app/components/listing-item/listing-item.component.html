@@ -28,6 +28,22 @@
         </div>
         <div class="">{{ listing.bathrooms }}</div>
       </div>
+      <div
+        *ngIf="listing.furnished"
+        class="flex items-center text-gray-600 gap-1"
+      >
+        <div class="text-[20px]">
+          <i class="fa-solid fa-couch mr-[3px]"></i>
+        </div>
+      </div>
+      <div
+        *ngIf="listing.parking"
+        class="flex items-center text-gray-600 gap-1"
+      >
+        <div class="text-[20px]">
+          <i class="fas fa-parking mr-[3px]"></i>
+        </div>
+      </div>
     </div>
     <div class="text-xl font-bold text-black pb-3">{{ listing.price }}</div>
   </div>

@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
 import { Listing } from '../../models/listing';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-add-property',
@@ -21,7 +22,8 @@ export class AddPropertyComponent {
 
   constructor(
     private router: Router,
-    private listingsService: ListingsService
+    private listingsService: ListingsService,
+    private messageService: MessageService
   ) {}
 
   onAddProperty(newPropertyForm: NgForm): void {
@@ -39,22 +41,29 @@ export class AddPropertyComponent {
         furnished: this.furnished,
         name: this.propertyName,
         description: this.propertyDescription,
-        userRef: '1',
+        userId: '1',
       };
 
-      console.log('before adding', listing);
       this.listingsService.addProperty(listing).subscribe({
         next: (addedListing) => {
-          console.log('Property added successfully:', addedListing);
-          console.log('listings', this.listingsService.printProperties());
+          this.messageService.showAlert(
+            'Property added successfully.',
+            'success'
+          );
           this.router.navigate(['']);
         },
         error: (error) => {
-          console.error('Error adding property:', error);
+          this.messageService.showAlert(
+            'Error adding property. Please try again.',
+            'error'
+          );
         },
       });
     } else {
-      alert('Invalid username or password');
+      this.messageService.showAlert(
+        'Invalid property details. Please check your inputs and try again.',
+        'error'
+      );
     }
   }
 }

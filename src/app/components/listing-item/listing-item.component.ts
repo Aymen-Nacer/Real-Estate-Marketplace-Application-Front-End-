@@ -18,6 +18,6 @@ export class ListingItemComponent {
     price: 0,
     parking: false,
     furnished: false,
-    userRef: '1',
+    userId: '1',
   };
 }

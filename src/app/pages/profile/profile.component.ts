@@ -5,6 +5,7 @@ import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Listing } from '../../models/listing';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +21,8 @@ export class ProfileComponent {
   constructor(
     public authService: AuthService,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
     this.authService.printProperties();
     console.log(this.username);
@@ -34,18 +36,25 @@ export class ProfileComponent {
         password: this.password,
       };
 
-      console.log('user to be updated is ', updatedUser);
-
       this.usersService.updateUser(updatedUser).subscribe({
         next: (response) => {
-          console.log(`The user ${this.username} was updated successfully`);
+          this.messageService.showAlert(
+            `Profile updated successfully for ${this.username}`,
+            'success'
+          );
         },
         error: (updateError) => {
-          console.error('Error updating user:', updateError);
+          this.messageService.showAlert(
+            'Error updating profile. Please try again later.',
+            'error'
+          );
         },
       });
     } else {
-      alert('Invalid username or password');
+      this.messageService.showAlert(
+        'Invalid username or password. Please check your inputs and try again.',
+        'error'
+      );
     }
   }
 
@@ -54,23 +63,30 @@ export class ProfileComponent {
 
     this.usersService.deleteUser(currentUser.id).subscribe({
       next: () => {
-        console.log(
-          `The user ${currentUser.username} was deleted successfully`
+        this.messageService.showAlert(
+          `User ${currentUser.username} deleted successfully`,
+          'success'
         );
 
         this.authService.logout().subscribe({
           next: () => {
-            console.log('Logout successful');
+            this.messageService.showAlert('Logout successful', 'success');
             this.usersService.printProperties();
             this.router.navigate(['']);
           },
           error: (logoutError) => {
-            console.error('Error during logout:', logoutError);
+            this.messageService.showAlert(
+              'Error during logout. Please try again.',
+              'error'
+            );
           },
         });
       },
       error: (deleteError) => {
-        console.log(`Error deleting the user ${currentUser.username}`);
+        this.messageService.showAlert(
+          `Error deleting the user ${currentUser.username}. Please try again.`,
+          'error'
+        );
       },
     });
   }
@@ -81,16 +97,13 @@ export class ProfileComponent {
 
     this.usersService.getUserProperties(currentUserId).subscribe({
       next: (listings) => {
-        console.log('Received listings:', listings);
-        if (listings.length === 0) {
-          console.log('No properties found for user ID', currentUserId);
-        } else {
-          console.log('Listings were successfully found: ');
-          this.userListings = listings;
-        }
+        this.userListings = listings;
       },
       error: (error) => {
-        console.error('Error fetching listings:', error);
+        this.messageService.showAlert(
+          'Error fetching listings. Please try again.',
+          'error'
+        );
       },
     });
   }
@@ -98,12 +111,15 @@ export class ProfileComponent {
   onSignout() {
     this.authService.logout().subscribe({
       next: (response) => {
-        console.log(response);
+        this.messageService.showAlert('Logout successful', 'success');
         this.authService.printProperties();
         this.router.navigate(['']);
       },
       error: (error) => {
-        console.log('Encountered error in sign-out', error);
+        this.messageService.showAlert(
+          'Encountered error during sign-out. Please try again.',
+          'error'
+        );
       },
     });
   }
