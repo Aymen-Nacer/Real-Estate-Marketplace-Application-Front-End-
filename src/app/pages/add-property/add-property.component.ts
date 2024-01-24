@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
 import { Listing } from '../../models/listing';
 import { MessageService } from '../../services/message.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-add-property',
@@ -23,7 +24,8 @@ export class AddPropertyComponent {
   constructor(
     private router: Router,
     private listingsService: ListingsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthService
   ) {}
 
   onAddProperty(newPropertyForm: NgForm): void {
@@ -41,8 +43,10 @@ export class AddPropertyComponent {
         furnished: this.furnished,
         name: this.propertyName,
         description: this.propertyDescription,
-        userId: '1',
+        userId: this.authService.getCurrentUser().id.toString(),
       };
+
+      console.log('listing to be added is', listing);
 
       this.listingsService.addProperty(listing).subscribe({
         next: (addedListing) => {
