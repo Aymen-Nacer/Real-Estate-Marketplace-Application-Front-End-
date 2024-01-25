@@ -8,6 +8,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { SearchComponent } from './pages/search/search.component';
 import { AuthGuard } from './auth.guard';
+import { UpdatePropertyComponent } from './pages/update-property/update-property.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,11 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'search', component: SearchComponent },
+  {
+    path: 'update-property/:id',
+    component: UpdatePropertyComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
