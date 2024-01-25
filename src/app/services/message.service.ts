@@ -14,7 +14,7 @@ export class MessageService {
   constructor(private router: Router) {
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationStart) {
-        timer(4000)
+        timer(8000)
           .pipe(takeUntil(this.destroy$))
           .subscribe(() => {
             this.clearAlert();
