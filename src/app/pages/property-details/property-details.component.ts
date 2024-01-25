@@ -42,38 +42,38 @@ export class PropertyDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let propertyId = -1;
-    this.route.paramMap.subscribe((params) => {
-      propertyId = parseInt(params.get('id') || '-1', 10);
-      this.listingsService.getProperty(propertyId).subscribe({
-        next: (fetchedListing) => {
-          if (fetchedListing) {
-            this.listing = fetchedListing;
+    window.scrollTo(0, 0);
+    const params = this.route.snapshot.paramMap;
+    const propertyId = parseInt(params.get('id') || '-1', 10);
 
-            const userId = this.listing.userId || '-1';
+    this.listingsService.getProperty(propertyId).subscribe({
+      next: (fetchedListing) => {
+        if (fetchedListing) {
+          this.listing = fetchedListing;
 
-            this.usersService.getUser(parseInt(userId)).subscribe({
-              next: (user) => {
-                if (user) {
-                  this.landlord = user;
-                }
-              },
-              error: (error) => {
-                this.messageService.showAlert(
-                  'Error fetching user. Please try again.',
-                  'error'
-                );
-              },
-            });
-          }
-        },
-        error: (error) => {
-          this.messageService.showAlert(
-            'Error fetching property. Please try again.',
-            'error'
-          );
-        },
-      });
+          const userId = this.listing.userId || '-1';
+
+          this.usersService.getUser(parseInt(userId)).subscribe({
+            next: (user) => {
+              if (user) {
+                this.landlord = user;
+              }
+            },
+            error: (error) => {
+              this.messageService.showAlert(
+                'Error fetching user. Please try again.',
+                error
+              );
+            },
+          });
+        }
+      },
+      error: (error) => {
+        this.messageService.showAlert(
+          'Error fetching property. Please try again.',
+          error
+        );
+      },
     });
   }
 

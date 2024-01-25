@@ -19,6 +19,7 @@ export class LoginComponent {
     private router: Router,
     private messageService: MessageService
   ) {
+    window.scrollTo(0, 0);
     this.authService.printProperties();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {

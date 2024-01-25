@@ -26,7 +26,9 @@ export class AddPropertyComponent {
     private listingsService: ListingsService,
     private messageService: MessageService,
     private authService: AuthService
-  ) {}
+  ) {
+    window.scrollTo(0, 0);
+  }
 
   onAddProperty(newPropertyForm: NgForm): void {
     if (newPropertyForm.valid) {

@@ -19,6 +19,7 @@ export class SignupComponent {
     private router: Router,
     private messageService: MessageService
   ) {
+    window.scrollTo(0, 0);
     this.authService.printProperties();
   }
 

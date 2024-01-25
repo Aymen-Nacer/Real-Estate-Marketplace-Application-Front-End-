@@ -28,6 +28,7 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.route.queryParamMap.subscribe((queryParams) => {
       this.searchTerm = queryParams.get('searchTerm') || '';
       this.furnished = queryParams.get('furnished') === 'true' ? true : false;

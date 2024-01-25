@@ -6,6 +6,7 @@ import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Listing } from '../../models/listing';
 import { MessageService } from '../../services/message.service';
+import { ListingsService } from '../../services/listings.service';
 
 @Component({
   selector: 'app-profile',
@@ -22,8 +23,10 @@ export class ProfileComponent {
     public authService: AuthService,
     private usersService: UsersService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private listingService: ListingsService
   ) {
+    window.scrollTo(0, 0);
     this.authService.printProperties();
     console.log(this.username);
   }
@@ -122,5 +125,29 @@ export class ProfileComponent {
         );
       },
     });
+  }
+
+  onListingDelete(id: number | undefined) {
+    if (id !== undefined) {
+      this.listingService.deleteProperty(id).subscribe({
+        next: (response) => {
+          this.messageService.showAlert(
+            'Property deleted successfully',
+            'success'
+          );
+        },
+        error: (error) => {
+          this.messageService.showAlert(
+            'Error deleting property. Please try again.',
+            'error'
+          );
+        },
+      });
+    } else {
+      this.messageService.showAlert(
+        'Cannot delete property: Property ID is undefined.',
+        'error'
+      );
+    }
   }
 }
