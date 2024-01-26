@@ -95,7 +95,7 @@ export class ProfileComponent {
   }
 
   onShowListings() {
-    this.showlistings = true;
+    this.showlistings = !this.showlistings;
     const currentUserId = this.authService.getCurrentUser().id;
 
     this.usersService.getUserProperties(currentUserId).subscribe({
@@ -128,6 +128,7 @@ export class ProfileComponent {
   }
 
   onListingDelete(id: number | undefined) {
+    console.log('id to be deleted is ', id);
     if (id !== undefined) {
       this.listingService.deleteProperty(id).subscribe({
         next: (response) => {
@@ -135,12 +136,35 @@ export class ProfileComponent {
             'Property deleted successfully',
             'success'
           );
+
+          const index = this.userListings.findIndex(
+            (listing) => listing.id === id
+          );
+
+          if (index !== -1) {
+            this.userListings.splice(index, 1);
+          }
         },
         error: (error) => {
-          this.messageService.showAlert(
-            'Error deleting property. Please try again.',
-            'error'
-          );
+          if (error.status === 200) {
+            this.messageService.showAlert(
+              'Property deleted successfully',
+              'success'
+            );
+
+            const index = this.userListings.findIndex(
+              (listing) => listing.id === id
+            );
+
+            if (index !== -1) {
+              this.userListings.splice(index, 1);
+            }
+          } else {
+            this.messageService.showAlert(
+              'Error deleting property. Please try again.',
+              'error'
+            );
+          }
         },
       });
     } else {
