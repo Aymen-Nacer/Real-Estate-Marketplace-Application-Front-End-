@@ -34,12 +34,9 @@ export class ListingsService {
     return this.http.delete<void>(`${this.baseUrl}/delete/${propertyId}`);
   }
 
-  updateProperty(
-    propertyId: number,
-    updatedListing: Listing
-  ): Observable<Listing> {
+  updateProperty(updatedListing: Listing): Observable<Listing> {
     return this.http.put<Listing>(
-      `${this.baseUrl}/update/${propertyId}`,
+      `${this.baseUrl}/update/${updatedListing.id}`,
       updatedListing
     );
   }

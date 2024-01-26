@@ -17,6 +17,7 @@ import { ServicesCardComponent } from './components/services-card/services-card.
 import { FooterComponent } from './components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertComponent } from './components/alert/alert.component';
+import { UpdatePropertyComponent } from './pages/update-property/update-property.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AlertComponent } from './components/alert/alert.component';
     ServicesCardComponent,
     FooterComponent,
     AlertComponent,
+    UpdatePropertyComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
