@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Listing } from '../models/listing';
 import { MessageService } from './message.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class ListingsService {
   private listingsSubject = new BehaviorSubject<Listing[]>([]);
   listings$: Observable<Listing[]> = this.listingsSubject.asObservable();
 
-  private baseUrl = 'http://localhost:8080/api/listings';
+  private baseUrl = environment.apiBaseUrl + '/api/listings';
 
   constructor(
     private http: HttpClient,
