@@ -9,17 +9,23 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly localStorageKey = 'currentUser';
   private loggedIn = false;
   private user: User = {
     id: 0,
     username: '',
     email: '',
-    password: '',
   };
 
   private baseUrl = environment.apiBaseUrl + '/api/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const storedUser = localStorage.getItem(this.localStorageKey);
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
+      this.loggedIn = true;
+    }
+  }
 
   get isLoggedIn(): boolean {
     return this.loggedIn;
@@ -41,6 +47,11 @@ export class AuthService {
           if (response.success) {
             this.loggedIn = true;
             this.user = response.user;
+            // Save the current user to local storage
+            localStorage.setItem(
+              this.localStorageKey,
+              JSON.stringify(this.user)
+            );
           }
         })
       );
@@ -72,6 +83,9 @@ export class AuthService {
             email: '',
             password: '',
           };
+
+          // Remove the current user from local storage
+          localStorage.removeItem(this.localStorageKey);
         })
       );
   }
