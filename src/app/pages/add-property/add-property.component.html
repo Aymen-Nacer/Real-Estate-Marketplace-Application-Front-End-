@@ -159,10 +159,10 @@
 
     <ng-container *ngIf="currentUploadedFiles.length > 0">
       <div
-        *ngFor="let element of currentUploadedFiles; let index = index"
+        *ngFor="let file of currentUploadedFiles; let index = index"
         class="flex justify-between p-3 border items-center mb-5"
       >
-        <p>{{ element.name }}</p>
+        <p>{{ file.name }}</p>
         <button
           type="button"
           (click)="handleRemoveImage(index)"

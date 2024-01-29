@@ -56,36 +56,47 @@ export class AddPropertyComponent {
       );
     }
   }
-
   onUpload(): void {
     this.uploading = true;
-    if (this.selectedFiles) {
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        const file: File = this.selectedFiles[i];
 
-        this.currentFileUpload = new FileUpload(file);
+    const uploadFiles = async () => {
+      if (this.selectedFiles) {
+        for (let i = 0; i < this.selectedFiles.length; i++) {
+          const file: File = this.selectedFiles[i];
+          this.currentFileUpload = new FileUpload(file);
 
-        this.imageUploadService
-          .pushFileToStorage(this.currentFileUpload)
-          .subscribe({
-            next: (percentage) => {
-              this.percentage = Math.round(percentage ? percentage : 0);
-            },
-            error: (error) => {
-              this.messageService.showAlert(
-                'Image upload failed (2 mb max per image)',
-                'error'
-              );
-              this.uploading = false;
-            },
-            complete: () => {
-              this.uploading = false;
-              this.percentage = 0;
-            },
-          });
+          try {
+            const percentage = await this.uploadFileAsync(
+              this.currentFileUpload
+            );
+            this.percentage = Math.round(percentage ? percentage : 0);
+          } catch (error) {
+            this.messageService.showAlert(
+              'Image upload failed (2 mb max per image)',
+              'error'
+            );
+            this.uploading = false;
+            return;
+          }
+        }
+
+        this.uploading = false;
+        this.percentage = 0;
+        this.selectedFiles = null;
       }
-      this.selectedFiles = null;
-    }
+    };
+
+    uploadFiles();
+  }
+
+  private uploadFileAsync(fileUpload: FileUpload): Promise<number | undefined> {
+    return new Promise((resolve, reject) => {
+      this.imageUploadService.pushFileToStorage(fileUpload).subscribe({
+        next: (percentage) => resolve(percentage),
+        error: (error) => reject(error),
+        complete: () => resolve(undefined),
+      });
+    });
   }
 
   handleRemoveImage(index: number) {
@@ -121,6 +132,7 @@ export class AddPropertyComponent {
             'Property added successfully.',
             'success'
           );
+          this.imageUploadService.clearUploadedFiles();
           this.router.navigate(['']);
         },
         error: (error) => {
