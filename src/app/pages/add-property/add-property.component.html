@@ -5,7 +5,7 @@
     <form
       #newPropertyForm="ngForm"
       (ngSubmit)="onAddProperty(newPropertyForm)"
-      class="form bg-white p-6 my-10 relative"
+      class="form bg-white p-6 my-5 relative"
     >
       <h3 class="text-2xl text-gray-900 font-semibold">Add a Property</h3>
       <div class="sm:flex space-x-0 sm:space-x-5 mt-3">
@@ -122,12 +122,55 @@
         </div>
       </div>
 
+      <div class="flex flex-col flex-1 gap-4 mt-5">
+        <p class="font-semibold">
+          Images:
+          <span class="font-normal text-gray-600 ml-2">
+            The first image will be the cover (max 6)
+          </span>
+        </p>
+        <div class="flex gap-4">
+          <input
+            (change)="selectFile($event)"
+            class="p-3 border border-gray-300 rounded w-full"
+            type="file"
+            id="images"
+            accept="image/*"
+            multiple
+          />
+          <button
+            type="button"
+            [disabled]="uploading || isExceedingLimit()"
+            (click)="onUpload()"
+            class="p-3 bg-green-600 text-white rounded uppercase hover:shadow-lg"
+          >
+            {{ uploading ? "Uploading... " + percentage + "%" : "Upload" }}
+          </button>
+        </div>
+      </div>
+
       <input
         type="submit"
-        value="Submit"
+        value="Submit Form"
         class="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-3"
-        [disabled]="newPropertyForm.invalid"
+        [disabled]="newPropertyForm.invalid && uploading"
       />
     </form>
+
+    <ng-container *ngIf="currentUploadedFiles.length > 0">
+      <div
+        *ngFor="let element of currentUploadedFiles; let index = index"
+        class="flex justify-between p-3 border items-center mb-5"
+      >
+        <p>{{ element.name }}</p>
+        <button
+          type="button"
+          (click)="handleRemoveImage(index)"
+          class="p-3 bg-red-600 text-white rounded-lg uppercase hover:opacity-75"
+        >
+          Delete
+        </button>
+      </div>
+    </ng-container>
   </div>
 </div>
