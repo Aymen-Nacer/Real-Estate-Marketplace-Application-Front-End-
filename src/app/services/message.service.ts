@@ -21,7 +21,7 @@ export class MessageService {
       if (event instanceof NavigationStart) {
         this.alertTimer$.next(); // Signal to cancel the previous timer
 
-        timer(10000)
+        timer(5000)
           .pipe(takeUntil(this.alertTimer$), takeUntil(this.destroy$))
           .subscribe(() => {
             this.clearAlert();

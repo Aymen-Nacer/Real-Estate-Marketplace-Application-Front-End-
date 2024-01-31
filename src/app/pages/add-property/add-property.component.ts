@@ -7,6 +7,7 @@ import { MessageService } from '../../services/message.service';
 import { AuthService } from '../../services/auth.service';
 import { ImageUploadService } from '../../services/image-upload.service';
 import { FileUpload } from '../../models/fileUpload';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-add-property',
@@ -33,7 +34,8 @@ export class AddPropertyComponent {
     private listingsService: ListingsService,
     private messageService: MessageService,
     private authService: AuthService,
-    private imageUploadService: ImageUploadService
+    private imageUploadService: ImageUploadService,
+    public loadingService: LoadingService
   ) {
     window.scrollTo(0, 0);
     this.imageUploadService.uploadedFiles$.subscribe((uploadedFiles) => {
@@ -104,6 +106,7 @@ export class AddPropertyComponent {
   }
 
   onAddProperty(newPropertyForm: NgForm): void {
+    this.loadingService.show();
     if (newPropertyForm.valid) {
       const listing: Listing = {
         imageUrls: [],
@@ -133,6 +136,7 @@ export class AddPropertyComponent {
             'success'
           );
           this.imageUploadService.clearUploadedFiles();
+          this.loadingService.hide();
           this.router.navigate(['']);
         },
         error: (error) => {
@@ -140,6 +144,7 @@ export class AddPropertyComponent {
             'Error adding property. Please try again.',
             'error'
           );
+          this.loadingService.hide();
         },
       });
     } else {
@@ -147,6 +152,7 @@ export class AddPropertyComponent {
         'Invalid property details. Please check your inputs and try again.',
         'error'
       );
+      this.loadingService.hide();
     }
   }
 

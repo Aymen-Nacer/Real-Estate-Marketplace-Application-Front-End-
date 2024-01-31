@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { MessageService } from '../../services/message.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public loadingService: LoadingService
   ) {
     window.scrollTo(0, 0);
     this.authService.printProperties();
@@ -26,13 +28,14 @@ export class LoginComponent {
         console.log('NavigationEnd event:', event);
       }
     });
-    console.log('Login ngOnInit');
   }
 
   login(loginForm: NgForm): void {
+    this.loadingService.show();
     if (loginForm.valid) {
       this.authService.login(this.email, this.password).subscribe({
         next: (response) => {
+          this.loadingService.hide();
           if (response.success) {
             this.messageService.showAlert(
               'Login successful! Welcome back!',
@@ -48,6 +51,7 @@ export class LoginComponent {
           }
         },
         error: (error) => {
+          this.loadingService.hide();
           this.messageService.showAlert(
             'Oops! Something went wrong during login. Please try again later.',
             'error'

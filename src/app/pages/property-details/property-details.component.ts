@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { User } from '../../models/user';
 import { UsersService } from '../../services/users.service';
 import { MessageService } from '../../services/message.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-property-details',
@@ -38,7 +39,8 @@ export class PropertyDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private listingsService: ListingsService,
     private usersService: UsersService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public loadingService: LoadingService
   ) {}
 
   ngOnInit() {
@@ -55,11 +57,15 @@ export class PropertyDetailsComponent implements OnInit {
 
           this.usersService.getUser(parseInt(userId)).subscribe({
             next: (user) => {
+              this.loadingService.hide();
+
               if (user) {
                 this.landlord = user;
               }
             },
             error: (error) => {
+              this.loadingService.hide();
+
               this.messageService.showAlert(
                 'Error fetching user. Please try again.',
                 error
@@ -69,6 +75,8 @@ export class PropertyDetailsComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.loadingService.hide();
+
         this.messageService.showAlert(
           'Error fetching property. Please try again.',
           error

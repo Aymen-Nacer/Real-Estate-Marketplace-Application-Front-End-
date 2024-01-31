@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { MessageService } from '../../services/message.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,13 +18,16 @@ export class SignupComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public loadingService: LoadingService
   ) {
     window.scrollTo(0, 0);
     this.authService.printProperties();
   }
 
   signup(signupForm: NgForm): void {
+    this.loadingService.show();
+
     console.log('email is', this.email);
     console.log('username is', this.username);
     console.log('password is', this.password);
@@ -33,6 +37,8 @@ export class SignupComponent {
         .signup(this.username, this.email, this.password)
         .subscribe({
           next: (response) => {
+            this.loadingService.hide();
+
             this.messageService.showAlert(
               'Signup successful. Welcome!',
               'success'
@@ -41,6 +47,8 @@ export class SignupComponent {
             this.router.navigate(['']);
           },
           error: (error) => {
+            this.loadingService.hide();
+
             if (error.status === 200) {
               this.messageService.showAlert(
                 'Signup successful. Welcome!',
@@ -57,6 +65,8 @@ export class SignupComponent {
           },
         });
     } else {
+      this.loadingService.hide();
+
       this.messageService.showAlert(
         'Invalid username or password. Please check your inputs and try again.',
         'error'

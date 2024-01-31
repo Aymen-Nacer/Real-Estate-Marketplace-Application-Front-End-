@@ -5,6 +5,7 @@ import { ListingsService } from '../../services/listings.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { AuthService } from '../../services/auth.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-update-property',
@@ -27,12 +28,15 @@ export class UpdatePropertyComponent implements OnInit {
     private route: ActivatedRoute,
     private messageService: MessageService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public loadingService: LoadingService
   ) {}
   ngOnInit(): void {
     window.scrollTo(0, 0);
     const params = this.route.snapshot.paramMap;
     this.propertyId = parseInt(params.get('id') || '-1', 10);
+
+    this.loadingService.show();
 
     this.listingsService.getProperty(this.propertyId).subscribe({
       next: (fetchedListing) => {
@@ -46,8 +50,10 @@ export class UpdatePropertyComponent implements OnInit {
           this.furnished = fetchedListing.furnished || false;
           this.propertyPrice = fetchedListing.price || 0;
         }
+        this.loadingService.hide();
       },
       error: (error) => {
+        this.loadingService.hide();
         this.messageService.showAlert(
           'Error fetching property. Please try again.',
           error
@@ -57,6 +63,8 @@ export class UpdatePropertyComponent implements OnInit {
   }
 
   onUpdateProperty(updatePropertyForm: NgForm): void {
+    this.loadingService.show();
+
     if (updatePropertyForm.valid) {
       const listing: Listing = {
         id: this.propertyId,
@@ -77,6 +85,8 @@ export class UpdatePropertyComponent implements OnInit {
 
       this.listingsService.updateProperty(listing).subscribe({
         next: (updatedListing) => {
+          this.loadingService.hide();
+
           this.messageService.showAlert(
             'Property updated successfully.',
             'success'
@@ -84,6 +94,8 @@ export class UpdatePropertyComponent implements OnInit {
           this.router.navigate(['/propertyDetails', this.propertyId]);
         },
         error: (error) => {
+          this.loadingService.hide();
+
           this.messageService.showAlert(
             'Error updating property. Please try again.',
             'error'

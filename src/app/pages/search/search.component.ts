@@ -4,6 +4,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
 import { Listing } from '../../models/listing';
 import { MessageService } from '../../services/message.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-search',
@@ -24,7 +25,8 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private listingService: ListingsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public loadingService: LoadingService
   ) {}
 
   ngOnInit() {
@@ -44,14 +46,20 @@ export class SearchComponent implements OnInit {
         .map((key) => `${key}=${queryParams.getAll(key).join(',')}`)
         .join('&');
 
+      this.loadingService.show();
+
       this.listingService.getProperties(queryParamsString).subscribe({
         error: (error) => {
+          this.loadingService.hide();
+
           this.messageService.showAlert(
             'Error fetching listings. Please try again.',
             'error'
           );
         },
         next: (listings) => {
+          this.loadingService.hide();
+
           this.listings = listings;
         },
       });

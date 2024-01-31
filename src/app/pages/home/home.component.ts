@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
         this.listings = listings;
       }
     );
-    console.log(this.listings);
   }
 
   onSubmitForm() {
