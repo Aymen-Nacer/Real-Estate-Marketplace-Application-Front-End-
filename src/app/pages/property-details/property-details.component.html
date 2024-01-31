@@ -1,29 +1,25 @@
 <ng-container *ngIf="listing">
-  <section>
+  <section class="">
     <div class="container mx-auto p-14 flex flex-col gap-8">
       <div
         class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-0"
       >
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 items-center sm:items-stretch">
           <h3 class="text-2xl font-semibold">{{ listing.name }}</h3>
           <p class="text-lg">{{ listing.address }}</p>
         </div>
         <div class="">
-          <div class="text-4xl font-semibold text-black pb-3">
+          <div class="text-4xl font-semibold text-black pb-3 text-center">
             {{ listing.price }}
           </div>
         </div>
       </div>
-      <div class="flex flex-col items-center gap-8 lg:flex-row">
+      <div class="flex flex-col gap-8 lg:flex-row">
         <div class="max-w-[768px] flex flex-col gap-6">
-          <div class="lg:w-[768px] lg:h-[500px]">
-            <img
-              [src]="listing.imageUrls[0]"
-              class="object-cover h-full w-full"
-              alt=""
-            />
+          <div class="">
+            <app-carousel [images]="listing.imageUrls"></app-carousel>
           </div>
-          <div class="flex gap-6">
+          <div class="flex gap-6 flex-col xs:flex-row items-start">
             <div class="flex gap-2 items-center">
               <i class="fa-solid fa-bed mr-[1px] text-xl"></i>
               <div>{{ listing.bedrooms }}</div>

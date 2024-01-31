@@ -14,7 +14,7 @@ import { MessageService } from '../../services/message.service';
 })
 export class PropertyDetailsComponent implements OnInit {
   listing: Listing = {
-    imageUrls: [],
+    imageUrls: ['https://i.imgur.com/n6B1Fuw.jpg'],
     name: '',
     description: '',
     address: '',
