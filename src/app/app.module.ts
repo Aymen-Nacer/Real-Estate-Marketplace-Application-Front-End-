@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +18,13 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertComponent } from './components/alert/alert.component';
 import { UpdatePropertyComponent } from './pages/update-property/update-property.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { SwiperDirective } from './directives/swiper.directive';
+import { CarouselComponent } from './components/carousel/carousel.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { environment } from '../environments/environment';
+import { register } from 'swiper/element/bundle';
 
 @NgModule({
   declarations: [
@@ -35,9 +42,20 @@ import { UpdatePropertyComponent } from './pages/update-property/update-property
     FooterComponent,
     AlertComponent,
     UpdatePropertyComponent,
+    CarouselComponent,
+    SwiperDirective,
+    LoadingSpinnerComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

@@ -58,24 +58,11 @@ export class AuthService {
   }
 
   signup(username: string, email: string, password: string): Observable<any> {
-    return this.http
-      .post<any>(
-        `${this.baseUrl}/signup`,
-        { username, email, password },
-        { withCredentials: true }
-      )
-      .pipe(
-        tap((response) => {
-          if (response.success) {
-            this.loggedIn = true;
-            this.user = response.user;
-            localStorage.setItem(
-              this.localStorageKey,
-              JSON.stringify(this.user)
-            );
-          }
-        })
-      );
+    return this.http.post<any>(
+      `${this.baseUrl}/signup`,
+      { username, email, password },
+      { withCredentials: true }
+    );
   }
 
   logout(): Observable<any> {
