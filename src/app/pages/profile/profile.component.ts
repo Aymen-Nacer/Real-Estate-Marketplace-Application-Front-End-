@@ -18,7 +18,21 @@ export class ProfileComponent {
   username = this.authService.getCurrentUser().username;
   password = '';
   showlistings = false;
-  userListings: Listing[] = [];
+  userListings: Listing[] = [
+    {
+      id: 1,
+      imageUrls: ['url1.jpg', 'url2.jpg'],
+      name: 'Cozy Apartment',
+      description: 'A beautiful apartment with a great view.',
+      address: '123 Main Street',
+      bedrooms: 2,
+      bathrooms: 1,
+      price: 1500,
+      parking: true,
+      furnished: false,
+      userId: 'user123',
+    },
+  ];
 
   constructor(
     public authService: AuthService,

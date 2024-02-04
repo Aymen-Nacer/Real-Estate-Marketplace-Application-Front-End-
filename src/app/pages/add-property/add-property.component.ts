@@ -18,8 +18,8 @@ export class AddPropertyComponent {
   propertyName = '';
   propertyDescription = '';
   address = '';
-  bedrooms = 0;
-  bathrooms = 0;
+  bedrooms = 1;
+  bathrooms = 1;
   parking = false;
   furnished = false;
   propertyPrice = 0;

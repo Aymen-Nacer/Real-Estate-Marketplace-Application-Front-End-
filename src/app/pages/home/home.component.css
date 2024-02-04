@@ -25,3 +25,20 @@
 .custom-color3:hover {
   background-color: #565564;
 }
+
+.bg-custom3 {
+  background-color: #8eb2cc;
+}
+
+.hero-section {
+  margin: 0;
+  padding: 0;
+  background-image: url("../../../assets/home2.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.custom-font {
+  font-family: "Roboto", sans-serif;
+}

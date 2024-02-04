@@ -14,7 +14,7 @@
         <form
           #updateForm="ngForm"
           (ngSubmit)="onProfileUpdate(updateForm)"
-          class="flex flex-col gap-4"
+          class="flex flex-col gap-3"
         >
           <img
             src="https://picsum.photos/200/300"
@@ -38,27 +38,33 @@
           />
           <button
             type="submit"
-            class="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+            class="bg-black text-white rounded-lg px-4 py-3 bg-blue-600 hover:bg-blue-500"
           >
             Update Profile
           </button>
+          <button
+            (click)="onShowListings()"
+            class="bg-green-600 text-white rounded-lg px-4 py-3"
+          >
+            Show Listings
+          </button>
         </form>
-        <div class="flex justify-between mt-5">
-          <span (click)="onDeleteAccount()" class="text-red-700 cursor-pointer">
+        <div class="flex justify-between mt-6 mb-6">
+          <span
+            (click)="onDeleteAccount()"
+            class="text-red-700 cursor-pointer font-semibold"
+          >
             Delete account
           </span>
-          <span class="text-red-700 cursor-pointer" (click)="onSignout()">
+
+          <span
+            class="text-red-700 cursor-pointer font-semibold"
+            (click)="onSignout()"
+          >
             Sign out
           </span>
         </div>
       </div>
-
-      <button
-        (click)="onShowListings()"
-        class="text-green-700 w-full mt-5 mb-10"
-      >
-        Show Listings
-      </button>
     </div>
 
     <ng-container
@@ -107,12 +113,12 @@
               <p>{{ listing.name }}</p>
             </a>
 
-            <div class="flex flex-col item-center">
+            <div class="flex flex-col item-center gap-1">
               <button
                 (click)="
                   listing.id !== undefined ? onListingDelete(listing.id) : null
                 "
-                class="text-red-700 uppercase"
+                class="bg-red-600 text-white rounded-lg px-4 py-3 w-full"
               >
                 Delete
               </button>
@@ -124,7 +130,11 @@
                     : null
                 "
               >
-                <button class="text-green-700 uppercase">Edit</button>
+                <button
+                  class="bg-blue-600 text-white rounded-lg px-4 py-3 w-full"
+                >
+                  Edit
+                </button>
               </a>
             </div>
           </div>

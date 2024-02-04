@@ -44,7 +44,7 @@ export class SignupComponent {
               'success'
             );
             this.authService.printProperties();
-            this.router.navigate(['']);
+            this.router.navigate(['/login']);
           },
           error: (error) => {
             this.loadingService.hide();

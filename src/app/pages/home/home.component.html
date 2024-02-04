@@ -1,37 +1,29 @@
 <div class="flex flex-col">
   <section
-    class="min-h-screen flex flex-col md:flex-row py-12 xl:py-24 gap-8 md:gap-0"
+    class="min-h-screen flex flex-col md:flex-row py-12 xl:py-24 gap-8 md:gap-10 md:px-10 hero-section"
   >
     <!---image-->
     <div class="flex-1 flex justify-center">
-      <div
-        class="image-container sm:w-[388px] sm:h-[512px] w-[240px] h-[280px]"
-      >
-        <img
-          class="w-full h-full"
-          src="../../../assets/banner3.jpg"
-          alt="houses"
-        />
-      </div>
+      <div class=""></div>
     </div>
     <div
-      class="lg:mr-8 xl:mr-[135px] flex flex-col items-center lg:items-start text-center lg:text-left justify-center px-4 lg:px-0 gap-6 flex-1"
+      class="lg:mr-4 flex flex-col items-center lg:items-start text-center lg:text-left justify-center px-4 lg:px-0 gap-6 flex-1 custom-font"
     >
-      <h1 class="lg:text-[58px] font-semibold leading-tight lg:max-w-[550px]">
+      <h1 class="lg:text-[58px] font-medium leading-tight lg:max-w-[550px]">
         Your Dream House Is One Step Away
       </h1>
-      <p class="max-w-[480px]">
+      <p class="max-w-[480px] font-normal text-gray-800">
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium
         rerum soluta quo dolore odio, repudiandae, et odit possimus quas eveniet
         id! Eligendi aspernatur pariatur, a numquam labore eos distinctio
         explicabo.
       </p>
       <!-----search bar------>
-      <div class="relative mt-3">
+      <div class="relative mt-3 shadow-md">
         <form (ngSubmit)="onSubmitForm()">
           <input
             type="text"
-            class="shadow rounded border-0 p-4 w-full lg:w-[39rem]"
+            class="rounded p-4 w-full lg:w-[39rem]"
             [(ngModel)]="searchTerm"
             placeholder="Search by name..."
             name="searchTerm"
@@ -58,7 +50,7 @@
       ></app-listing-item>
     </div>
   </section>
-  <section class="p-20 px-20">
+  <section class="p-20 px-20 min-h-[90vh]" id="servicesSection">
     <h1 class="text-center font-semibold text-4xl mb-16">Our Services</h1>
     <div
       class="max-w-sm mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:max-w-2xl lg:max-w-none"
@@ -88,28 +80,30 @@
       ></app-services-card>
     </div>
   </section>
-  <section class="pb-20 px-20">
+  <section
+    class="px-20 bg-custom3 min-h-screen flex items-center justify-center"
+  >
     <div
       class="p-8 md:px-20 md:py-20 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center"
     >
-      <h2 class="text-black text-4xl md:text-6xl tracking-tight">
+      <h2 class="text-black text-4xl md:text-6xl font-bold">
         Build faster websites.
       </h2>
-      <p class="mt-4 text-lg md:text-xl">
+      <p class="mt-7 text-lg md:text-xl font-medium">
         Pull content from anywhere and serve it fast with Astro's next-gen
         island architecture.
       </p>
-      <div class="flex mt-5">
+      <div class="flex mt-7">
         <a
           routerLink="/search"
-          class="bg-black text-white px-4 py-3 rounded-lg transition custom-color3"
+          class="bg-black text-white px-4 py-3 rounded-full font-semibold"
         >
           Get Started
         </a>
       </div>
     </div>
   </section>
-  <section class="px-20 bg-white py-10">
+  <section class="px-20 bg-white py-10 mt-16 min-h-screen" id="contactSection">
     <h1 class="text-center font-semibold text-4xl mb-8">Contact Us</h1>
     <div class="block rounded-lg px-6 py-12 md:py-16 md:px-12">
       <div class="flex flex-wrap">
@@ -140,7 +134,7 @@
 
             <button
               type="button"
-              class="mb-6 inline-block w-full rounded bg-primary px-6 pt-2.5 pb-2 text-xs font-medium uppercase text-white shadow-md hover:bg-primary-600 focus:bg-primary-600 lg:mb-0"
+              class="mb-6 inline-block w-full rounded-full font-bold bg-black px-6 pt-2.5 pb-2 text-sm text-white shadow-md lg:mb-0"
             >
               Send
             </button>

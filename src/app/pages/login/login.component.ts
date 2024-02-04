@@ -52,6 +52,7 @@ export class LoginComponent {
         },
         error: (error) => {
           this.loadingService.hide();
+          console.log(error);
           this.messageService.showAlert(
             'Oops! Something went wrong during login. Please try again later.',
             'error'
