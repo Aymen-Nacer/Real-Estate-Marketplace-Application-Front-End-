@@ -1,39 +1,116 @@
-<header class="py-6 border-b bg-white">
-  <div class="container mx-auto flex justify-between items-center">
-    <a class="font-semibold text-lg" routerLink="/"> AYMEN NACER </a>
+<header class="w-full shadow-md font-semibold">
+  <nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
+    <div
+      class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto"
+    >
+      <a routerLink="/" class="flex items-center">
+        <img src="../../../assets/estate.png" class="h-16" alt="Logo" />
+        <span
+          class="self-center text-xl whitespace-nowrap dark:text-white font-bold"
+        >
+          AN
+        </span>
+      </a>
+      <div class="flex items-center lg:order-2">
+        <a
+          *ngIf="!authService.isAuthenticated()"
+          routerLink="/login"
+          class="px-[24px] py-[0px] inline-flex items-center justify-center bg-black text-white rounded-full hover:shadow-lg h-[48px] font-bold mr-3"
+        >
+          Log in
+        </a>
 
-    <div class="flex items-center gap-6">
-      <a class="custom-color transition" routerLink="/"> Home </a>
-      <a
-        class="custom-color transition"
-        *ngIf="!authService.isAuthenticated()"
-        routerLink="/login"
-      >
-        Log in
-      </a>
-      <a
-        class="bg-black text-white px-4 py-3 rounded-lg transition custom-color2"
-        *ngIf="!authService.isAuthenticated()"
-        routerLink="/signup"
-      >
-        Sign up
-      </a>
+        <a
+          *ngIf="!authService.isAuthenticated()"
+          routerLink="/signup"
+          class="px-[24px] py-[0px] inline-flex items-center justify-center bg-black text-white rounded-full hover:shadow-lg h-[48px] font-bold mr-3"
+        >
+          Sign up
+        </a>
 
-      <a
-        class="custom-color transition"
-        *ngIf="authService.isAuthenticated()"
-        routerLink="/profile"
-      >
-        Profile
-      </a>
+        <a
+          *ngIf="authService.isAuthenticated()"
+          routerLink="/addProperty"
+          class="px-[24px] py-[0px] inline-flex items-center justify-center bg-black text-white rounded-full hover:shadow-lg h-[48px] font-bold mr-3"
+        >
+          Add Property
+        </a>
 
-      <a
-        class="custom-color transition"
-        *ngIf="authService.isAuthenticated()"
-        routerLink="/addProperty"
+        <a
+          *ngIf="authService.isAuthenticated()"
+          routerLink="/profile"
+          class="px-[24px] py-[0px] inline-flex items-center justify-center bg-black text-white rounded-full hover:shadow-lg h-[48px] font-bold mr-3"
+        >
+          <i class="fa-solid fa-user"></i>
+        </a>
+
+        <button
+          (click)="toggleMobileMenu()"
+          type="button"
+          class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          [attr.aria-expanded]="mobileMenuOpen"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-6 h-6"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+            ></path>
+          </svg>
+          <svg
+            class="hidden w-6 h-6"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <div
+        class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"
+        [class.hidden]="!mobileMenuOpen"
       >
-        Add New Property
-      </a>
+        <ul class="flex flex-col mt-4 lg:flex-row lg:space-x-8 lg:mt-0">
+          <li>
+            <a
+              routerLink="/"
+              class="block py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-gray-700 lg:border-0 lg:p-0"
+              aria-current="page"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              [routerLink]="['/']"
+              fragment="servicesSection"
+              class="block py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-gray-700 lg:border-0 lg:p-0"
+              >Our Services</a
+            >
+          </li>
+          <li>
+            <a
+              [routerLink]="['/']"
+              fragment="contactSection"
+              class="block py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-gray-700 lg:border-0 lg:p-0"
+              >Contact us</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/search"
+              class="block py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-gray-700 lg:border-0 lg:p-0"
+              >Properties</a
+            >
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </nav>
 </header>

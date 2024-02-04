@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -8,4 +8,10 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
   constructor(public authService: AuthService) {}
+
+  mobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
 }
