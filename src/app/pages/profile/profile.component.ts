@@ -43,7 +43,7 @@ export class ProfileComponent {
     public loadingService: LoadingService
   ) {
     window.scrollTo(0, 0);
-    this.authService.printProperties();
+
     console.log(this.username);
   }
 
@@ -58,18 +58,32 @@ export class ProfileComponent {
 
       this.usersService.updateUser(updatedUser).subscribe({
         next: (response) => {
+          if (response && response.success) {
+            this.messageService.showAlert(
+              `Profile updated successfully for ${this.username}`,
+              'success'
+            );
+          } else {
+            this.messageService.showAlert(
+              'Error updating profile. Please try again later.',
+              'error'
+            );
+          }
           this.loadingService.hide();
-          this.messageService.showAlert(
-            `Profile updated successfully for ${this.username}`,
-            'success'
-          );
         },
-        error: (updateError) => {
+        error: (response) => {
+          if (response && response.success) {
+            this.messageService.showAlert(
+              `Profile updated successfully for ${this.username}`,
+              'success'
+            );
+          } else {
+            this.messageService.showAlert(
+              'Error updating profile. Please try again later.',
+              'error'
+            );
+          }
           this.loadingService.hide();
-          this.messageService.showAlert(
-            'Error updating profile. Please try again later.',
-            'error'
-          );
         },
       });
     } else {
@@ -96,24 +110,56 @@ export class ProfileComponent {
           next: () => {
             this.loadingService.hide();
             this.messageService.showAlert('Logout successful', 'success');
-            this.usersService.printProperties();
+            this.authService.logoutLocally();
             this.router.navigate(['']);
           },
-          error: (logoutError) => {
-            this.loadingService.hide();
-            this.messageService.showAlert(
-              'Error during logout. Please try again.',
-              'error'
-            );
+          error: (response) => {
+            if (response && response.status) {
+              this.loadingService.hide();
+              this.messageService.showAlert('Logout successful', 'success');
+              this.authService.logoutLocally();
+              this.router.navigate(['']);
+            } else {
+              this.loadingService.hide();
+              this.messageService.showAlert(
+                'Error during logout. Please try again.',
+                'error'
+              );
+            }
           },
         });
       },
       error: (deleteError) => {
-        this.loadingService.hide();
-        this.messageService.showAlert(
-          `Error deleting the user ${currentUser.username}. Please try again.`,
-          'error'
-        );
+        if (deleteError && deleteError.success) {
+          this.authService.logout().subscribe({
+            next: () => {
+              this.loadingService.hide();
+              this.messageService.showAlert('Logout successful', 'success');
+              this.authService.logoutLocally();
+              this.router.navigate(['']);
+            },
+            error: (response) => {
+              if (response && response.success) {
+                this.loadingService.hide();
+                this.messageService.showAlert('Logout successful', 'success');
+                this.authService.logoutLocally();
+                this.router.navigate(['']);
+              } else {
+                this.loadingService.hide();
+                this.messageService.showAlert(
+                  'Error during logout. Please try again.',
+                  'error'
+                );
+              }
+            },
+          });
+        } else {
+          this.loadingService.hide();
+          this.messageService.showAlert(
+            `Error deleting the user ${currentUser.username}. Please try again.`,
+            'error'
+          );
+        }
       },
     });
   }
@@ -125,19 +171,32 @@ export class ProfileComponent {
     const currentUserId = this.authService.getCurrentUser().id;
 
     this.usersService.getUserProperties(currentUserId).subscribe({
-      next: (listings) => {
-        this.loadingService.hide();
+      next: (response) => {
+        if (response && response.success) {
+          this.loadingService.hide();
+          this.userListings = response.listings;
+        } else {
+          this.loadingService.hide();
 
-        this.userListings = listings;
+          this.messageService.showAlert(
+            'Error fetching listings. Please try again.',
+            'error'
+          );
+        }
       },
 
-      error: (error) => {
-        this.loadingService.hide();
+      error: (response) => {
+        if (response && response.success) {
+          this.loadingService.hide();
+          this.userListings = response.listings[0];
+        } else {
+          this.loadingService.hide();
 
-        this.messageService.showAlert(
-          'Error fetching listings. Please try again.',
-          'error'
-        );
+          this.messageService.showAlert(
+            'Error fetching listings. Please try again.',
+            'error'
+          );
+        }
       },
     });
   }
@@ -149,17 +208,30 @@ export class ProfileComponent {
       next: (response) => {
         this.loadingService.hide();
 
-        this.messageService.showAlert('Logout successful', 'success');
-        this.authService.printProperties();
-        this.router.navigate(['']);
+        if (response && response.success) {
+          this.messageService.showAlert('Logout successful', 'success');
+          this.authService.logoutLocally();
+          this.router.navigate(['']);
+        } else {
+          this.messageService.showAlert(
+            'Encountered error during sign-out. Please try again.',
+            'error'
+          );
+        }
       },
-      error: (error) => {
+      error: (response) => {
         this.loadingService.hide();
 
-        this.messageService.showAlert(
-          'Encountered error during sign-out. Please try again.',
-          'error'
-        );
+        if (response && response.success) {
+          this.messageService.showAlert('Logout successful', 'success');
+          this.authService.logoutLocally();
+          this.router.navigate(['']);
+        } else {
+          this.messageService.showAlert(
+            'Encountered error during sign-out. Please try again.',
+            'error'
+          );
+        }
       },
     });
   }
@@ -172,23 +244,7 @@ export class ProfileComponent {
         next: (response) => {
           this.loadingService.hide();
 
-          this.messageService.showAlert(
-            'Property deleted successfully',
-            'success'
-          );
-
-          const index = this.userListings.findIndex(
-            (listing) => listing.id === id
-          );
-
-          if (index !== -1) {
-            this.userListings.splice(index, 1);
-          }
-        },
-        error: (error) => {
-          this.loadingService.hide();
-
-          if (error.status === 200) {
+          if (response && response.success) {
             this.messageService.showAlert(
               'Property deleted successfully',
               'success'
@@ -202,8 +258,29 @@ export class ProfileComponent {
               this.userListings.splice(index, 1);
             }
           } else {
-            this.loadingService.hide();
+            this.messageService.showAlert(
+              'Error deleting property. Please try again.',
+              'error'
+            );
+          }
+        },
+        error: (response) => {
+          this.loadingService.hide();
 
+          if (response && response.success) {
+            this.messageService.showAlert(
+              'Property deleted successfully',
+              'success'
+            );
+
+            const index = this.userListings.findIndex(
+              (listing) => listing.id === id
+            );
+
+            if (index !== -1) {
+              this.userListings.splice(index, 1);
+            }
+          } else {
             this.messageService.showAlert(
               'Error deleting property. Please try again.',
               'error'

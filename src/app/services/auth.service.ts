@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '../models/apiResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +36,9 @@ export class AuthService {
     return this.user;
   }
 
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string): Observable<ApiResponse> {
     return this.http
-      .post<any>(
+      .post<ApiResponse>(
         `${this.baseUrl}/signin`,
         { email, password },
         { withCredentials: true }
@@ -57,31 +58,36 @@ export class AuthService {
       );
   }
 
-  signup(username: string, email: string, password: string): Observable<any> {
-    return this.http.post<any>(
+  signup(
+    username: string,
+    email: string,
+    password: string
+  ): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(
       `${this.baseUrl}/signup`,
       { username, email, password },
       { withCredentials: true }
     );
   }
 
-  logout(): Observable<any> {
+  logout(): Observable<ApiResponse> {
     return this.http
-      .get<any>(`${this.baseUrl}/signout`, {
+      .get<ApiResponse>(`${this.baseUrl}/signout`, {
         withCredentials: true,
       })
       .pipe(
-        tap(() => {
-          this.loggedIn = false;
-          this.user = {
-            id: 0,
-            username: '',
-            email: '',
-            password: '',
-          };
+        tap((response) => {
+          if (response.success) {
+            this.loggedIn = false;
+            this.user = {
+              id: 0,
+              username: '',
+              email: '',
+              password: '',
+            };
 
-          // Remove the current user from local storage
-          localStorage.removeItem(this.localStorageKey);
+            localStorage.removeItem(this.localStorageKey);
+          }
         })
       );
   }
@@ -94,8 +100,15 @@ export class AuthService {
     return this.user;
   }
 
-  printProperties(): void {
-    console.log('isLoggedIn:', this.loggedIn);
-    console.log('currentUser:', this.user);
+  logoutLocally() {
+    this.loggedIn = false;
+    this.user = {
+      id: 0,
+      username: '',
+      email: '',
+      password: '',
+    };
+
+    localStorage.removeItem(this.localStorageKey);
   }
 }

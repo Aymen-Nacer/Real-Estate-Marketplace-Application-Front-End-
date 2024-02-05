@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { Listing } from '../models/listing';
 import { MessageService } from './message.service';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '../models/apiResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -27,45 +28,64 @@ export class ListingsService {
     return this._listings;
   }
 
-  addProperty(listing: Listing): Observable<Listing> {
-    return this.http.post<Listing>(`${this.baseUrl}/create`, listing);
+  addProperty(listing: Listing): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(`${this.baseUrl}/create`, listing, {
+      withCredentials: true,
+    });
   }
 
-  deleteProperty(propertyId: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/delete/${propertyId}`);
-  }
-
-  updateProperty(updatedListing: Listing): Observable<Listing> {
-    return this.http.put<Listing>(
-      `${this.baseUrl}/update/${updatedListing.id}`,
-      updatedListing
+  deleteProperty(propertyId: number): Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>(
+      `${this.baseUrl}/delete/${propertyId}`,
+      {
+        withCredentials: true,
+      }
     );
   }
 
-  getProperty(propertyId: number): Observable<Listing | undefined> {
-    return this.http.get<Listing>(`${this.baseUrl}/get/${propertyId}`);
+  updateProperty(updatedListing: Listing): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(
+      `${this.baseUrl}/update/${updatedListing.id}`,
+      updatedListing,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
-  getProperties(filter: string) {
-    return this.http.get<Listing[]>(`${this.baseUrl}/get?${filter}`);
+  getProperty(propertyId: number): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${this.baseUrl}/get/${propertyId}`);
   }
 
-  printProperties(): void {
-    console.log('listings:', this._listings);
+  getProperties(filter: string): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${this.baseUrl}/get?${filter}`);
   }
 
   loadListings(): void {
     this.getProperties('searchTerm=&limit=3').subscribe({
-      error: (error) => {
-        this.messageService.showAlert(
-          'Error fetching listings. Please try again.',
-          'error'
-        );
-      },
-      next: (listings) => {
-        this._listings = listings;
+      next: (response) => {
+        if (response && response.success) {
+          this._listings = response.listings;
 
-        this.listingsSubject.next([...this._listings]);
+          this.listingsSubject.next([...this._listings]);
+        } else {
+          this.messageService.showAlert(
+            `Error fetching listings: ${response.message}`,
+            'error'
+          );
+        }
+      },
+      error: (response) => {
+        if (response && response.success) {
+          this._listings = response.listings;
+
+          this.listingsSubject.next([...this._listings]);
+        } else {
+          this.messageService.showAlert(
+            `Error fetching listings: ${response.message}`,
+            'error'
+          );
+        }
       },
     });
   }

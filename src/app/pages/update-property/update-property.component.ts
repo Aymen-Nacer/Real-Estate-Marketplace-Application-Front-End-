@@ -39,25 +39,41 @@ export class UpdatePropertyComponent implements OnInit {
     this.loadingService.show();
 
     this.listingsService.getProperty(this.propertyId).subscribe({
-      next: (fetchedListing) => {
-        if (fetchedListing) {
-          this.propertyName = fetchedListing.name || '';
-          this.propertyDescription = fetchedListing.description || '';
-          this.address = fetchedListing.address || '';
-          this.bedrooms = fetchedListing.bedrooms || 0;
-          this.bathrooms = fetchedListing.bathrooms || 0;
-          this.parking = fetchedListing.parking || false;
-          this.furnished = fetchedListing.furnished || false;
-          this.propertyPrice = fetchedListing.price || 0;
+      next: (response) => {
+        this.loadingService.hide();
+        if (response && response.success) {
+          this.propertyName = response.listings[0].name || '';
+          this.propertyDescription = response.listings[0].description || '';
+          this.address = response.listings[0].address || '';
+          this.bedrooms = response.listings[0].bedrooms || 0;
+          this.bathrooms = response.listings[0].bathrooms || 0;
+          this.parking = response.listings[0].parking || false;
+          this.furnished = response.listings[0].furnished || false;
+          this.propertyPrice = response.listings[0].price || 0;
+        } else {
+          this.messageService.showAlert(
+            'Error fetching property. Please try again.',
+            'error'
+          );
         }
-        this.loadingService.hide();
       },
-      error: (error) => {
+      error: (response) => {
         this.loadingService.hide();
-        this.messageService.showAlert(
-          'Error fetching property. Please try again.',
-          error
-        );
+        if (response && response.success) {
+          this.propertyName = response.listings[0].name || '';
+          this.propertyDescription = response.listings[0].description || '';
+          this.address = response.listings[0].address || '';
+          this.bedrooms = response.listings[0].bedrooms || 0;
+          this.bathrooms = response.listings[0].bathrooms || 0;
+          this.parking = response.listings[0].parking || false;
+          this.furnished = response.listings[0].furnished || false;
+          this.propertyPrice = response.listings[0].price || 0;
+        } else {
+          this.messageService.showAlert(
+            'Error fetching property. Please try again.',
+            'error'
+          );
+        }
       },
     });
   }
@@ -84,22 +100,37 @@ export class UpdatePropertyComponent implements OnInit {
       };
 
       this.listingsService.updateProperty(listing).subscribe({
-        next: (updatedListing) => {
+        next: (response) => {
           this.loadingService.hide();
 
-          this.messageService.showAlert(
-            'Property updated successfully.',
-            'success'
-          );
-          this.router.navigate(['/propertyDetails', this.propertyId]);
+          if (response && response.success) {
+            this.messageService.showAlert(
+              'Property updated successfully.',
+              'success'
+            );
+            this.router.navigate(['/propertyDetails', this.propertyId]);
+          } else {
+            this.messageService.showAlert(
+              'Error updating property. Please try again.',
+              'error'
+            );
+          }
         },
-        error: (error) => {
+        error: (response) => {
           this.loadingService.hide();
 
-          this.messageService.showAlert(
-            'Error updating property. Please try again.',
-            'error'
-          );
+          if (response && response.success) {
+            this.messageService.showAlert(
+              'Property updated successfully.',
+              'success'
+            );
+            this.router.navigate(['/propertyDetails', this.propertyId]);
+          } else {
+            this.messageService.showAlert(
+              'Error updating property. Please try again.',
+              'error'
+            );
+          }
         },
       });
     } else {

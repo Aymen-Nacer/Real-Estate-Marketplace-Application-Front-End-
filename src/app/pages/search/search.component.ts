@@ -49,18 +49,29 @@ export class SearchComponent implements OnInit {
       this.loadingService.show();
 
       this.listingService.getProperties(queryParamsString).subscribe({
-        error: (error) => {
+        next: (response) => {
           this.loadingService.hide();
 
-          this.messageService.showAlert(
-            'Error fetching listings. Please try again.',
-            'error'
-          );
+          if (response && response.success) {
+            this.listings = response.listings;
+          } else {
+            this.messageService.showAlert(
+              'Error fetching listings. Please try again.',
+              'error'
+            );
+          }
         },
-        next: (listings) => {
+        error: (response) => {
           this.loadingService.hide();
 
-          this.listings = listings;
+          if (response && response.success) {
+            this.listings = response.listings;
+          } else {
+            this.messageService.showAlert(
+              'Error fetching listings. Please try again.',
+              'error'
+            );
+          }
         },
       });
     });

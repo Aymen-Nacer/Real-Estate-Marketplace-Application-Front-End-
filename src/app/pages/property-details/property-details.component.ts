@@ -49,38 +49,87 @@ export class PropertyDetailsComponent implements OnInit {
     const propertyId = parseInt(params.get('id') || '-1', 10);
 
     this.listingsService.getProperty(propertyId).subscribe({
-      next: (fetchedListing) => {
-        if (fetchedListing) {
-          this.listing = fetchedListing;
+      next: (response) => {
+        if (response && response.success) {
+          this.listing = response.listings[0];
 
           const userId = this.listing.userId || '-1';
 
           this.usersService.getUser(parseInt(userId)).subscribe({
-            next: (user) => {
+            next: (response) => {
               this.loadingService.hide();
 
-              if (user) {
-                this.landlord = user;
+              if (response && response.success) {
+                this.landlord = response.user;
+              } else {
+                this.loadingService.hide();
+
+                this.messageService.showAlert(
+                  'Error fetching user. Please try again.',
+                  'error'
+                );
               }
             },
             error: (error) => {
               this.loadingService.hide();
 
-              this.messageService.showAlert(
-                'Error fetching user. Please try again.',
-                error
-              );
+              if (error && error.success) {
+                this.landlord = error.user;
+              } else {
+                this.loadingService.hide();
+
+                this.messageService.showAlert(
+                  'Error fetching user. Please try again.',
+                  'error'
+                );
+              }
             },
           });
+        } else {
+          this.loadingService.hide();
+          this.messageService.showAlert(
+            'Error fetching property. Please try again.',
+            'error'
+          );
         }
       },
       error: (error) => {
-        this.loadingService.hide();
+        if (error && error.success) {
+          this.listing = error.listings[0];
 
-        this.messageService.showAlert(
-          'Error fetching property. Please try again.',
-          error
-        );
+          const userId = this.listing.userId || '-1';
+
+          this.usersService.getUser(parseInt(userId)).subscribe({
+            next: (response) => {
+              this.loadingService.hide();
+
+              if (response && response.success) {
+                this.landlord = response.user;
+              } else {
+                this.loadingService.hide();
+
+                this.messageService.showAlert(
+                  'Error fetching user. Please try again.',
+                  'error'
+                );
+              }
+            },
+            error: (response) => {
+              this.loadingService.hide();
+
+              if (response && response.success) {
+                this.landlord = response.user;
+              } else {
+                this.loadingService.hide();
+
+                this.messageService.showAlert(
+                  'Error fetching user. Please try again.',
+                  'error'
+                );
+              }
+            },
+          });
+        }
       },
     });
   }

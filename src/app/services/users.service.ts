@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { Listing } from '../models/listing';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '../models/apiResponse'; // Import ApiResponse model
 
 @Injectable({
   providedIn: 'root',
@@ -13,26 +14,29 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  getUserProperties(userId: number): Observable<Listing[]> {
-    return this.http.get<Listing[]>(`${this.baseUrl}/listings/${userId}`);
+  getUserProperties(userId: number): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${this.baseUrl}/listings/${userId}`);
   }
 
-  deleteUser(userId: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/delete/${userId}`);
+  deleteUser(userId: number): Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>(`${this.baseUrl}/delete/${userId}`, {
+      withCredentials: true,
+    });
   }
 
-  updateUser(updatedUser: User): Observable<User> {
-    return this.http.put<User>(
+  updateUser(updatedUser: User): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(
       `${this.baseUrl}/update/${updatedUser.id}`,
-      updatedUser
+      updatedUser,
+      {
+        withCredentials: true,
+      }
     );
   }
 
-  getUser(userId: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${userId}`);
-  }
-
-  printProperties(): void {
-    console.log('users:');
+  getUser(userId: number): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${this.baseUrl}/${userId}`, {
+      withCredentials: true,
+    });
   }
 }

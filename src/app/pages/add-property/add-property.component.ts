@@ -127,24 +127,40 @@ export class AddPropertyComponent {
         listing.imageUrls.push('https://i.imgur.com/n6B1Fuw.jpg');
       }
 
-      console.log('listing to be added is', listing);
-
       this.listingsService.addProperty(listing).subscribe({
-        next: (addedListing) => {
-          this.messageService.showAlert(
-            'Property added successfully.',
-            'success'
-          );
-          this.imageUploadService.clearUploadedFiles();
+        next: (response) => {
           this.loadingService.hide();
-          this.router.navigate(['']);
+
+          if (response && response.success) {
+            this.messageService.showAlert(
+              'Property added successfully.',
+              'success'
+            );
+            this.imageUploadService.clearUploadedFiles();
+            this.router.navigate(['']);
+          } else {
+            this.messageService.showAlert(
+              'Error adding property. Please try again.',
+              'error'
+            );
+          }
         },
-        error: (error) => {
-          this.messageService.showAlert(
-            'Error adding property. Please try again.',
-            'error'
-          );
+        error: (response) => {
           this.loadingService.hide();
+
+          if (response && response.success) {
+            this.messageService.showAlert(
+              'Property added successfully.',
+              'success'
+            );
+            this.imageUploadService.clearUploadedFiles();
+            this.router.navigate(['']);
+          } else {
+            this.messageService.showAlert(
+              'Error adding property. Please try again.',
+              'error'
+            );
+          }
         },
       });
     } else {

@@ -22,7 +22,6 @@ export class LoginComponent {
     public loadingService: LoadingService
   ) {
     window.scrollTo(0, 0);
-    this.authService.printProperties();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         console.log('NavigationEnd event:', event);
@@ -36,12 +35,11 @@ export class LoginComponent {
       this.authService.login(this.email, this.password).subscribe({
         next: (response) => {
           this.loadingService.hide();
-          if (response.success) {
+          if (response && response.success) {
             this.messageService.showAlert(
               'Login successful! Welcome back!',
               'success'
             );
-            this.authService.printProperties();
             this.router.navigate(['']);
           } else {
             this.messageService.showAlert(
@@ -50,13 +48,20 @@ export class LoginComponent {
             );
           }
         },
-        error: (error) => {
+        error: (response) => {
           this.loadingService.hide();
-          console.log(error);
-          this.messageService.showAlert(
-            'Oops! Something went wrong during login. Please try again later.',
-            'error'
-          );
+          if (response && response.success) {
+            this.messageService.showAlert(
+              'Login successful! Welcome back!',
+              'success'
+            );
+            this.router.navigate(['']);
+          } else {
+            this.messageService.showAlert(
+              'Oops! Something went wrong during login. Please try again later.',
+              'error'
+            );
+          }
         },
       });
     } else {

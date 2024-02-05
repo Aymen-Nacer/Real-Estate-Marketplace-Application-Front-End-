@@ -22,7 +22,6 @@ export class SignupComponent {
     public loadingService: LoadingService
   ) {
     window.scrollTo(0, 0);
-    this.authService.printProperties();
   }
 
   signup(signupForm: NgForm): void {
@@ -38,24 +37,30 @@ export class SignupComponent {
         .subscribe({
           next: (response) => {
             this.loadingService.hide();
-
-            this.messageService.showAlert(
-              'Signup successful. Welcome!',
-              'success'
-            );
-            this.authService.printProperties();
-            this.router.navigate(['/login']);
-          },
-          error: (error) => {
-            this.loadingService.hide();
-
-            if (error.status === 200) {
+            if (response && response.success) {
               this.messageService.showAlert(
                 'Signup successful. Welcome!',
                 'success'
               );
-              this.authService.printProperties();
-              this.router.navigate(['']);
+
+              this.router.navigate(['/login']);
+            } else {
+              this.messageService.showAlert(
+                'Encountered error in signing up. Please try again.',
+                'error'
+              );
+            }
+          },
+          error: (response) => {
+            this.loadingService.hide();
+
+            if (response && response.success) {
+              this.messageService.showAlert(
+                'Signup successful. Welcome!',
+                'success'
+              );
+
+              this.router.navigate(['/login']);
             } else {
               this.messageService.showAlert(
                 'Encountered error in signing up. Please try again.',
