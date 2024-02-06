@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   onSubmitForm() {
     console.log('search term is', this.searchTerm);
     this.router.navigate(['/search'], {
-      queryParams: { searchTerm: this.searchTerm },
+      queryParams: { searchTerm: this.searchTerm, limit: 9 },
     });
   }
 

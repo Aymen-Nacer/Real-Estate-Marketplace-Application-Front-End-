@@ -5,6 +5,7 @@ import { ListingsService } from '../../services/listings.service';
 import { Listing } from '../../models/listing';
 import { MessageService } from '../../services/message.service';
 import { LoadingService } from '../../services/loading.service';
+import { ApiResponse } from '../../models/apiResponse';
 
 @Component({
   selector: 'app-search',
@@ -18,6 +19,9 @@ export class SearchComponent implements OnInit {
   sortOptions = 'createdAt_desc';
   sort = '';
   order = '';
+  showMoreBtn = false;
+  startIndex = 0;
+  limit = 9;
 
   listings: Listing[] = [];
 
@@ -37,6 +41,8 @@ export class SearchComponent implements OnInit {
       this.parking = queryParams.get('parking') === 'true' ? true : false;
       const sortParam = queryParams.get('sort');
       const orderParam = queryParams.get('order');
+      const limitParam = queryParams.get('limit');
+      this.limit = limitParam ? parseInt(limitParam, 10) : 9;
 
       if (sortParam && orderParam) {
         this.sortOptions = `${sortParam}_${orderParam}`;
@@ -46,34 +52,7 @@ export class SearchComponent implements OnInit {
         .map((key) => `${key}=${queryParams.getAll(key).join(',')}`)
         .join('&');
 
-      this.loadingService.show();
-
-      this.listingService.getProperties(queryParamsString).subscribe({
-        next: (response) => {
-          this.loadingService.hide();
-
-          if (response && response.success) {
-            this.listings = response.listings;
-          } else {
-            this.messageService.showAlert(
-              'Error fetching listings. Please try again.',
-              'error'
-            );
-          }
-        },
-        error: (response) => {
-          this.loadingService.hide();
-
-          if (response && response.success) {
-            this.listings = response.listings;
-          } else {
-            this.messageService.showAlert(
-              'Error fetching listings. Please try again.',
-              'error'
-            );
-          }
-        },
-      });
+      this.fetchProperties(queryParamsString);
     });
   }
 
@@ -100,6 +79,57 @@ export class SearchComponent implements OnInit {
     } else {
       this.messageService.showAlert(
         'Invalid search criteria. Please check your inputs and try again.',
+        'error'
+      );
+    }
+  }
+
+  onShowMoreClick() {
+    const queryParams = this.route.snapshot.queryParamMap;
+
+    let queryParamsString = Array.from(queryParams.keys)
+      .map((key) => {
+        if (key === 'limit') {
+          return ''; // Skip this iteration
+        }
+        return `${key}=${queryParams.getAll(key).join(',')}`;
+      })
+      .join('&');
+
+    queryParamsString =
+      queryParamsString + `&startIndex=${this.startIndex}&limit=${this.limit}`;
+
+    console.log('query params string is :', queryParamsString);
+
+    this.fetchProperties(queryParamsString);
+  }
+
+  fetchProperties(queryParamsString: string) {
+    this.loadingService.show();
+
+    this.listingService.getProperties(queryParamsString).subscribe({
+      next: (response) => {
+        this.handleFetchResponse(response);
+      },
+      error: (response) => {
+        this.handleFetchResponse(response);
+      },
+    });
+  }
+
+  private handleFetchResponse(response: ApiResponse) {
+    this.loadingService.hide();
+
+    if (response && response.success) {
+      if (response.listings) {
+        this.listings.push(...response.listings);
+
+        this.showMoreBtn = response.listings.length === this.limit;
+        this.startIndex = this.listings.length;
+      }
+    } else {
+      this.messageService.showAlert(
+        'Error fetching listings. Please try again.',
         'error'
       );
     }
