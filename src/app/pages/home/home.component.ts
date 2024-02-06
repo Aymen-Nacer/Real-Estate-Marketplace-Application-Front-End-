@@ -3,6 +3,7 @@ import { Listing } from '../../models/listing';
 import { ListingsService } from '../../services/listings.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -39,5 +40,20 @@ export class HomeComponent implements OnInit {
     if (this.listingsSubscription) {
       this.listingsSubscription.unsubscribe();
     }
+  }
+
+  sendEmail(contactForm: NgForm): void {
+    const companyEmail = 'mo@gmail.com';
+    const subject = `Enquiry`;
+    const message = contactForm.value.message;
+    const senderEmail = encodeURIComponent(contactForm.value.email);
+    const senderName = encodeURIComponent(contactForm.value.name);
+
+    const emailLink = `mailto:${companyEmail}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(
+      message
+    )}&from=${senderEmail}&sender=${senderName}`;
+    window.location.href = emailLink;
   }
 }

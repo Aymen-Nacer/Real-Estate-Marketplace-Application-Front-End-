@@ -29,10 +29,8 @@ export class PropertyDetailsComponent implements OnInit {
 
   landlord: User = {
     id: 0,
-    username: '',
-    email: '',
-    password: '',
-    avatar: '',
+    username: 'mo',
+    email: 'mo@gmail.com',
   };
 
   constructor(
@@ -134,11 +132,17 @@ export class PropertyDetailsComponent implements OnInit {
     });
   }
 
-  submitForm(contactForm: NgForm): void {
-    if (contactForm.valid) {
-      console.log(contactForm.value);
-    } else {
-      alert('Invalid username or password');
-    }
+  sendEmail(contactForm: NgForm): void {
+    const subject = `Regarding ${this.listing.name}`;
+    const message = contactForm.value.message;
+    const senderEmail = encodeURIComponent(contactForm.value.email);
+    const senderName = encodeURIComponent(contactForm.value.name);
+
+    const emailLink = `mailto:${
+      this.landlord.email
+    }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      message
+    )}&from=${senderEmail}&sender=${senderName}`;
+    window.location.href = emailLink;
   }
 }

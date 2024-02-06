@@ -111,8 +111,14 @@
         <div
           class="mb-12 w-full shrink-0 grow-0 basis-auto md:px-3 lg:mb-0 lg:w-5/12 lg:px-6"
         >
-          <form class="flex flex-col gap-7">
+          <form
+            #contactForm="ngForm"
+            (ngSubmit)="sendEmail(contactForm)"
+            class="flex flex-col gap-7"
+          >
             <input
+              ngModel
+              name="name"
               type="text"
               class="border min-h-[auto] w-full rounded py-[0.32rem] px-3"
               id="name"
@@ -120,6 +126,8 @@
             />
 
             <input
+              ngModel
+              name="email"
               type="email"
               class="border block min-h-[auto] w-full rounded py-[0.32rem] px-3"
               id="exampleInput91"
@@ -127,6 +135,8 @@
             />
 
             <textarea
+              ngModel
+              name="message"
               class="border block min-h-[auto] w-full rounded py-[0.32rem] px-3"
               id="exampleFormControlTextarea1"
               rows="3"
@@ -134,10 +144,11 @@
             ></textarea>
 
             <button
-              type="button"
+              type="submit"
+              [disabled]="contactForm.invalid"
               class="mb-6 inline-block w-full rounded-full font-bold bg-black px-6 pt-2.5 pb-2 text-sm text-white shadow-md lg:mb-0"
             >
-              Send
+              Send Message
             </button>
           </form>
         </div>
