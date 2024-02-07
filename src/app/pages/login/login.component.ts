@@ -71,4 +71,8 @@ export class LoginComponent {
       );
     }
   }
+
+  googleAuth() {
+    this.authService.signInWithGoogle();
+  }
 }

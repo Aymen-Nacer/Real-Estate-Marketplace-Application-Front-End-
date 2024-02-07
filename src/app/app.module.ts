@@ -26,6 +26,10 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 import { register } from 'swiper/element/bundle';
 
+import firebase from 'firebase/compat/app';
+
+firebase.initializeApp(environment.firebaseConfig);
+
 @NgModule({
   declarations: [
     AppComponent,

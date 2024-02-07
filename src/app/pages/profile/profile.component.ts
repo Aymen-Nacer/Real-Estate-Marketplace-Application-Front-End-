@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { NgForm } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
@@ -14,9 +14,10 @@ import { LoadingService } from '../../services/loading.service';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
-export class ProfileComponent {
-  username = this.authService.getCurrentUser().username;
-  password = '';
+export class ProfileComponent implements OnInit {
+  username: string = 'Unknown';
+  userAvatar: string = 'https://picsum.photos/200/300';
+  email: string = 'Unknown@unknown.com';
   showlistings = false;
   userListings: Listing[] = [
     {
@@ -43,49 +44,57 @@ export class ProfileComponent {
     public loadingService: LoadingService
   ) {
     window.scrollTo(0, 0);
+  }
 
-    console.log(this.username);
+  ngOnInit(): void {
+    const currentUser = this.authService.getCurrentUser();
+
+    if (currentUser) {
+      this.username = currentUser.username || 'Unknown';
+      this.userAvatar = currentUser.avatar || 'https://picsum.photos/200/300';
+      this.email = currentUser.email || 'Unknown@unknown.com';
+    }
   }
 
   onProfileUpdate(profileForm: NgForm): void {
     this.loadingService.show();
     if (profileForm.valid) {
-      const updatedUser: User = {
-        ...this.authService.getCurrentUser(),
-        username: this.username,
-        password: this.password,
-      };
-
-      this.usersService.updateUser(updatedUser).subscribe({
-        next: (response) => {
-          if (response && response.success) {
-            this.messageService.showAlert(
-              `Profile updated successfully for ${this.username}`,
-              'success'
-            );
-          } else {
-            this.messageService.showAlert(
-              'Error updating profile. Please try again later.',
-              'error'
-            );
-          }
-          this.loadingService.hide();
-        },
-        error: (response) => {
-          if (response && response.success) {
-            this.messageService.showAlert(
-              `Profile updated successfully for ${this.username}`,
-              'success'
-            );
-          } else {
-            this.messageService.showAlert(
-              'Error updating profile. Please try again later.',
-              'error'
-            );
-          }
-          this.loadingService.hide();
-        },
-      });
+      this.usersService
+        .updateUser(
+          this.authService.getCurrentUser().id,
+          this.username,
+          this.email
+        )
+        .subscribe({
+          next: (response) => {
+            if (response && response.success) {
+              this.messageService.showAlert(
+                `Profile updated successfully for ${this.username}`,
+                'success'
+              );
+            } else {
+              this.messageService.showAlert(
+                'Error updating profile. Please try again later.',
+                'error'
+              );
+            }
+            this.loadingService.hide();
+          },
+          error: (response) => {
+            if (response && response.success) {
+              this.messageService.showAlert(
+                `Profile updated successfully for ${this.username}`,
+                'success'
+              );
+            } else {
+              this.messageService.showAlert(
+                'Error updating profile. Please try again later.',
+                'error'
+              );
+            }
+            this.loadingService.hide();
+          },
+        });
     } else {
       this.loadingService.hide();
       this.messageService.showAlert(

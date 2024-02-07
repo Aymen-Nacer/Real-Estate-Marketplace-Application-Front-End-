@@ -24,10 +24,14 @@ export class UsersService {
     });
   }
 
-  updateUser(updatedUser: User): Observable<ApiResponse> {
+  updateUser(
+    id: number,
+    username: string,
+    email: string
+  ): Observable<ApiResponse> {
     return this.http.put<ApiResponse>(
-      `${this.baseUrl}/update/${updatedUser.id}`,
-      updatedUser,
+      `${this.baseUrl}/update/${id}`,
+      { username: username, email: email },
       {
         withCredentials: true,
       }

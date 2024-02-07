@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, from, throwError } from 'rxjs';
+import { catchError, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/apiResponse';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { LoadingService } from './loading.service';
+import { Router } from '@angular/router';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +26,12 @@ export class AuthService {
 
   private baseUrl = environment.apiBaseUrl + '/api/auth';
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private messageService: MessageService,
+    public loadingService: LoadingService
+  ) {
     const storedUser = localStorage.getItem(this.localStorageKey);
     if (storedUser) {
       this.user = JSON.parse(storedUser);
@@ -90,6 +101,60 @@ export class AuthService {
           }
         })
       );
+  }
+
+  signInWithGoogle(): void {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    this.loadingService.show();
+
+    from(firebase.auth().signInWithPopup(provider))
+      .pipe(
+        switchMap((result) => {
+          const username = result.user?.displayName;
+          const email = result.user?.email;
+          const avatar = result.user?.photoURL;
+
+          return this.http.post<ApiResponse>(
+            `${this.baseUrl}/googleAuth`,
+            {
+              username,
+              email,
+              avatar,
+            },
+            { withCredentials: true }
+          );
+        }),
+        tap((response) => {
+          this.loadingService.hide();
+          if (response && response.success) {
+            this.loggedIn = true;
+            this.user = response.user;
+            localStorage.setItem(
+              this.localStorageKey,
+              JSON.stringify(this.user)
+            );
+            this.messageService.showAlert(
+              'Login successful! Welcome back!',
+              'success'
+            );
+            this.router.navigate(['']);
+            console.log('current user is', this.user);
+          } else {
+            this.messageService.showAlert(
+              `Login failed: ${response.message}`,
+              'error'
+            );
+          }
+        }),
+        catchError((error) => {
+          this.loadingService.hide();
+          this.messageService.showAlert(`Login failed: ${error}`, 'error');
+          return throwError(() => error);
+        }),
+        take(1)
+      )
+      .subscribe();
   }
 
   isAuthenticated(): boolean {

@@ -78,4 +78,8 @@ export class SignupComponent {
       );
     }
   }
+
+  googleAuth() {
+    this.authService.signInWithGoogle();
+  }
 }

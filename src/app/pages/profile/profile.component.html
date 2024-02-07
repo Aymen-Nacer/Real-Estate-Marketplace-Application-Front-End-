@@ -17,8 +17,8 @@
           class="flex flex-col gap-3"
         >
           <img
-            src="https://picsum.photos/200/300"
-            alt="profile"
+            [src]="userAvatar"
+            alt="avatar"
             class="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2 mb-7"
           />
           <input
@@ -30,12 +30,13 @@
           />
 
           <input
-            type="password"
-            placeholder="Password"
-            [(ngModel)]="password"
-            name="password"
-            class="border p-3 rounded-lg"
+            type="email"
+            placeholder="Email"
+            [(ngModel)]="email"
+            name="email"
+            class="border p-3 rounded-lg mb-5"
           />
+
           <button
             type="submit"
             class="bg-black text-white rounded-lg px-4 py-3 bg-blue-600 hover:bg-blue-500"
