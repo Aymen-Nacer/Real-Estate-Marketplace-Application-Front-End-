@@ -30,15 +30,27 @@
   background-color: #8eb2cc;
 }
 
-.hero-section {
-  margin: 0;
-  padding: 0;
-  background-image: url("../../../assets/home2.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .custom-font {
   font-family: "Roboto", sans-serif;
+}
+
+@media (max-width: 600px) {
+  .hero-section {
+    margin: 0;
+    padding: 0;
+    background-image: url("../../../assets/home2-resp.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+@media (min-width: 601px) {
+  .hero-section {
+    margin: 0;
+    padding: 0;
+    background-image: url("../../../assets/home3.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 }

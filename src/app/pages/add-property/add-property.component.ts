@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ListingsService } from '../../services/listings.service';
@@ -28,6 +28,7 @@ export class AddPropertyComponent {
   percentage = 0;
   uploading = false;
   currentUploadedFiles: FileUpload[] = [];
+  UploadedSuccessCounter = 0;
 
   constructor(
     private router: Router,
@@ -35,7 +36,8 @@ export class AddPropertyComponent {
     private messageService: MessageService,
     private authService: AuthService,
     private imageUploadService: ImageUploadService,
-    public loadingService: LoadingService
+    public loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
   ) {
     window.scrollTo(0, 0);
     this.imageUploadService.uploadedFiles$.subscribe((uploadedFiles) => {
@@ -58,46 +60,42 @@ export class AddPropertyComponent {
       );
     }
   }
+
   onUpload(): void {
     this.uploading = true;
-
-    const uploadFiles = async () => {
-      if (this.selectedFiles) {
-        for (let i = 0; i < this.selectedFiles.length; i++) {
-          const file: File = this.selectedFiles[i];
-          this.currentFileUpload = new FileUpload(file);
-
-          try {
-            const percentage = await this.uploadFileAsync(
-              this.currentFileUpload
-            );
-            this.percentage = Math.round(percentage ? percentage : 0);
-          } catch (error) {
-            this.messageService.showAlert(
-              'Image upload failed (2 mb max per image)',
-              'error'
-            );
-            this.uploading = false;
-            return;
-          }
-        }
-
-        this.uploading = false;
-        this.percentage = 0;
-        this.selectedFiles = null;
+    if (this.selectedFiles) {
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        const file: File = this.selectedFiles[i];
+        this.currentFileUpload = new FileUpload(file);
+        this.uploading = true;
+        this.uploadFile(this.currentFileUpload);
       }
-    };
-
-    uploadFiles();
+    }
   }
 
-  private uploadFileAsync(fileUpload: FileUpload): Promise<number | undefined> {
-    return new Promise((resolve, reject) => {
-      this.imageUploadService.pushFileToStorage(fileUpload).subscribe({
-        next: (percentage) => resolve(percentage),
-        error: (error) => reject(error),
-        complete: () => resolve(undefined),
-      });
+  private uploadFile(fileUpload: FileUpload): void {
+    this.percentage = 0;
+    const uploadTask = this.imageUploadService.pushFileToStorage(fileUpload);
+
+    uploadTask.subscribe({
+      next: (percentage) => {
+        this.percentage = Math.round(percentage ? percentage : 0);
+      },
+      error: (error) => {
+        this.messageService.showAlert(
+          `Error uploading file: ${error}`,
+          'error'
+        );
+      },
+      complete: () => {
+        this.UploadedSuccessCounter++;
+
+        if (this.UploadedSuccessCounter === this.selectedFiles?.length) {
+          this.uploading = false;
+          this.UploadedSuccessCounter = 0;
+          this.selectedFiles = null;
+        }
+      },
     });
   }
 
